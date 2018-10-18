@@ -1,0 +1,4 @@
+runtime: custom
+env: flex
+liveness_check:
+  path: "/status"
