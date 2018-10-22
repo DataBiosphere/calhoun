@@ -34,12 +34,14 @@ app.post('/api/convert', async (req, res) => {
       throw new ErrorResponse(401, 'Unauthorized')
     }
     if (!authRes.ok) {
+      console.error('Sam error', await authRes.text())
       throw new ErrorResponse(503, 'Failed to query auth service')
     }
     const { enabled } = await authRes.json()
     if (!enabled) {
       throw new ErrorResponse(403, 'Forbidden')
     }
+
     const { childProcess, promise } = execWithPromise(
       'jupyter nbconvert --stdin --stdout',
       { maxBuffer: MAX_OUTPUT_SIZE }
@@ -48,10 +50,10 @@ app.post('/api/convert', async (req, res) => {
     const { stdout } = await promise.catch(error => {
       throw new ErrorResponse(400, error.toString())
     })
-    console.log(`Converted ${stdout.length} bytes`) // eslint-disable-line no-console
+    console.log(`Converted ${stdout.length} bytes`)
     return res.send(stdout)
   } catch (error) {
-    console.error(error) // eslint-disable-line no-console
+    console.error(error)
     res.status(error.status || 500).json({ message: error.toString() })
   }
 })

@@ -4,6 +4,7 @@ Notebook preview service
 ### Requirements
 - Docker
 - Node 8
+- Google cloud SDK
 
 ### Developing
 Install deps

@@ -24,6 +24,7 @@ module.exports = {
     'keyword-spacing': 'error',
     'lines-between-class-members': 'error',
     'multiline-comment-style': 'error',
+    'no-console': 'off',
     'no-lonely-if': 'error',
     'no-multi-assign': 'error',
     'no-multiple-empty-lines': 'error',
