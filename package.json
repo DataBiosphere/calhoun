@@ -9,13 +9,13 @@
     "start-dev": "nodemon"
   },
   "dependencies": {
-    "cors": "^2.8.4",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
-    "node-fetch": "^2.2.0"
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
-    "apidoc": "^0.17.6",
-    "eslint": "^5.7.0",
-    "nodemon": "^1.18.4"
+    "apidoc": "^0.17.7",
+    "eslint": "^5.9.0",
+    "nodemon": "^1.18.7"
   }
 }
