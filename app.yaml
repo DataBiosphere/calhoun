@@ -2,3 +2,5 @@ runtime: custom
 env: flex
 liveness_check:
   path: "/status"
+automatic_scaling:
+  min_num_instances: 8
