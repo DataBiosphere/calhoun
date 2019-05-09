@@ -4,7 +4,7 @@ const cors = require('cors')
 const { execWithPromise, ErrorResponse } = require('./utils')
 const { samRoot } = require('../config')
 
-const MAX_OUTPUT_SIZE = 1024 * 1024 * 10
+const MAX_OUTPUT_SIZE = 1024 * 1024 * 20
 
 const app = express()
 app.use(cors())
