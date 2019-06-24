@@ -2,7 +2,7 @@
 Jupyter notebook preview service
 
 ### Background
-This project is part of the Terra (né FireCloud) platform of service APIs. It is primarily intended to provide preview versions of notebooks for Terra-based web applications, such as the [Terra workbench](https://www.terra.bio) research environment. It is based on [Calhoun](https://github.com/DataBiosphere/calhoun), a similar service written in Node.js. The service is written wholly in Python 3.7, so that it can be deployed in the Google App Engine Standard environment. Calhoun used Node and shelled out to nbconvert. Since it required both Node and Python, it needed GAE Flexible which lacks FedRAMP certification.
+This project is part of the Terra (née FireCloud) platform of service APIs. It is primarily intended to provide preview versions of notebooks for Terra-based web applications, such as the [Terra workbench](https://www.terra.bio) research environment. Originally written in Node.js and shelling out to `nbconvert`, this service is now written wholly in Python 3.7 so that it can be deployed in the Google App Engine Standard environment.
 
 There is an argument to be made that the client application should interpret notebook JSON and handle it's own styling. It seems like it would be faster, and would eliminate the additional infrastructure. It could also be more customizable to the app context. But this app is fairly simple, and there's precedent that it works well for it's intended purpose. 
 
@@ -21,7 +21,7 @@ There are two routes:
 This endpoint is authorized via Terra's SAM authorization service. Calls therefore require an auth header supplying an Oauth2 bearer token (obtained via Google SSO or gcloud auth login). The token must represent a registered, enabled Terra/FireCloud  user.
 
 ### Framework.
-This project uses the [Sanic](https://sanic.readthedocs.io) Python web framework. Calhoun was written in Node.js and made use Node's async/await syntax. A couple of factors argue in favor of asynchronous request handling being an important feature:
+This project uses the [Sanic](https://sanic.readthedocs.io) Python web framework. Calhoun's original Node.js code made use Node's async/await syntax. A couple of factors argue in favor of asynchronous request handling being an important feature:
 1. The conversion itself may take some time
 2. The intended authorization method involves a call to another webservice, which may take variable time
 3. The intended consumer is a web-app with hundreds-to-thousands of monthly engaged users, and notebook previewing is a relatively common user task.
