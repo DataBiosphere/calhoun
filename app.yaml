@@ -1,6 +1,6 @@
-runtime: custom
-env: flex
-liveness_check:
-  path: "/status"
+runtime: python37
 automatic_scaling:
-  min_num_instances: 8
+  min_instances: 1
+  max_instances: 100
+  min_idle_instances: 1
+entrypoint: gunicorn -b :$PORT main:app --worker-class sanic.worker.GunicornWorker
