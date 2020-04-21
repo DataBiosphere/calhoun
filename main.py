@@ -8,6 +8,11 @@ app = Flask('calhoun')
 app.config.from_pyfile('config.py')
 
 
+@app.route('/_ah/warmup')
+def warmup():
+    return '', 200, {}
+
+
 @app.route('/status')
 def status():
     response = make_response('OK')

@@ -3,3 +3,5 @@ automatic_scaling:
   min_instances: 1
   max_instances: 100
   min_idle_instances: 1
+inbound_services:
+- warmup
