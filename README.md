@@ -34,7 +34,7 @@ Install dependencies
 ```sh
 python3 -m venv env
 source env/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-min.txt
 ```
 
 
@@ -47,6 +47,16 @@ Run a local server
 ```sh
 python3 main.py
 ```
+Or, to more closely emulate running in App Engine
+```sh
+gunicorn -b :8000 main:app
+```
+
+Update/freeze dependencies
+```sh
+scripts/freeze-deps.sh
+```
+This creates a clean virtualenv, installs dependencies from `dependencies-min.txt`, and freezes the resulting environment in `requirements.txt` (which Google App Engine uses during deployment).
 
 Deploy
 ```sh

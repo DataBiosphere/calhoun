@@ -1,1 +1,4 @@
-/config.*.json
+/config.*.py
+/env*
+/requirements-min.txt
+/scripts/*

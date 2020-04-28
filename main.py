@@ -1,24 +1,31 @@
-from sanic import Sanic
-from sanic import response
-from sanic_cors import CORS, cross_origin
+from flask import Flask, make_response, request
+from flask_cors import cross_origin
 from utils import perform_notebook_conversion, authorized
 
 
 # Webservice routing
-app = Sanic('douglass')
+app = Flask('calhoun')
 app.config.from_pyfile('config.py')
-CORS(app)
 
 
-@app.get('/status')
-async def status(request):
-    return response.text('OK')
+@app.route('/_ah/warmup')
+def warmup():
+    return '', 200, {}
 
-@app.route('/api/convert', methods={'POST','OPTIONS'})
-@cross_origin(app, automatic_options=True)
-@authorized(app.config.SAM_ROOT)
-async def convert(request):
-    return response.html(await perform_notebook_conversion(request.json))
+
+@app.route('/status')
+def status():
+    response = make_response('OK')
+    response.mimetype = 'text/plain'
+    return response
+
+
+@app.route('/api/convert', methods={'POST'})
+@cross_origin()
+@authorized(app.config['SAM_ROOT'])
+def convert():
+    json = request.get_json(force=True)
+    return perform_notebook_conversion(json)
 
 
 if __name__ == '__main__':

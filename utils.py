@@ -1,14 +1,13 @@
+from flask import request
 from requests import get
 from requests.exceptions import ConnectionError
 from functools import wraps
-from sanic.exceptions import *
 from nbconvert import HTMLExporter
 from nbformat.v4 import to_notebook
+from werkzeug.exceptions import *
 
 
-# Main conversion function accepting ipynb json and returning an HTML representation
-# As this may be slow, it is defined as a coroutine so it can be awaited
-async def perform_notebook_conversion(notebook_json):
+def perform_notebook_conversion(notebook_json):
     # Get the notebook json into a NotebookNode object that nbconvert can use
     nb = to_notebook(notebook_json)
 
@@ -25,12 +24,12 @@ async def perform_notebook_conversion(notebook_json):
 def authorized(sam_root):
     def decorator(f):
         @wraps(f)
-        async def decorated_function(request, *args, **kwargs):
+        def decorated_function(*args, **kwargs):
             # Check the Terra authorization service SAM for user auth status
-            user_is_authorized = await __check_sam_authorization(request, sam_root)
+            user_is_authorized = __check_sam_authorization(sam_root)
             if user_is_authorized:
                 # run the handler method and return the response
-                response = await f(request, *args, **kwargs)
+                response = f(*args, **kwargs)
                 return response
             else:
                 raise Forbidden
@@ -39,12 +38,12 @@ def authorized(sam_root):
 
 
 # Query Terra's authorization service SAM to determine user authorization status. Return auth status boolean
-async def __check_sam_authorization(request, sam_root):
+def __check_sam_authorization(sam_root):
     sam_url = sam_root + '/register/user/v2/self/info'
 
     # Well-formed requests must contain an authorization header
     if 'authorization' not in request.headers:
-        raise HeaderNotFound('Bad Request. Request requires authorization header supplying Oauth2 bearer token')
+        raise Unauthorized('Request requires authorization header supplying Oauth2 bearer token')
     try:
         sam_response = get(sam_url, headers={'authorization': request.headers['authorization']})
         return __process_sam_response(sam_response)
@@ -59,7 +58,7 @@ def __process_sam_response(sam_response):
     status = sam_response.status_code
     if status == 200:
         if 'enabled' not in sam_response.json():
-            raise ServerError('Internal Server Error. Unable to determine user authorization status')
+            raise InternalServerError('Internal Server Error. Unable to determine user authorization status')
         elif not sam_response.json()['enabled']:
             raise Forbidden('Forbidden. User is registered in Terra, but not activated.')
         else:
@@ -74,8 +73,8 @@ def __process_sam_response(sam_response):
         elif status == 404:
             raise Unauthorized('Unauthorized. User is authenticated to Google but is not a Terra member')
         elif status == 500:
-            raise ServerError('Internal Server Error. Authorization service query failed')
+            raise InternalServerError('Internal Server Error. Authorization service query failed')
         elif status == 503:
             raise ServiceUnavailable('Service Unavailable. Authorization service unable to contact one or more services')
         else:
-            raise ServerError('Internal Server Error. Unknown failure contacting authorization service.')
+            raise InternalServerError('Internal Server Error. Unknown failure contacting authorization service.')
