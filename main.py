@@ -1,10 +1,12 @@
 from flask import Flask, make_response, request
 from flask_cors import cross_origin
+from flask_talisman import Talisman
 from utils import perform_notebook_conversion, authorized
 
 
 # Webservice routing
 app = Flask('calhoun')
+Talisman(app)
 app.config.from_pyfile('config.py')
 
 
