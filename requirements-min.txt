@@ -7,6 +7,13 @@ nbconvert==5.6.1
 nbformat==5.0.5
 requests==2.23.0
 
+# Forcing a 4.x version of traitlets. nbconvert requests `traitlets>=4.2` which allows newer 5.x
+# releases. At the time of this writing, the traitlets project in GitHub has no release tag or
+# release notes for 5.0.0. There is even a report of a potential problem with nbconvert:
+# https://github.com/ipython/traitlets/issues/609. Therefore, it is safest to use a known working
+# version of traitlets.
+traitlets==4.3.3
+
 # Transitive dependencies appear after this comment block in requirements.txt.
 # To update/freeze all transitive dependencies of requirements-min.txt:
 #   scripts/freeze-deps.sh
