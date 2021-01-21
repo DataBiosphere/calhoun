@@ -5,6 +5,7 @@ docker image build . -t calhoun-test:0
 docker kill t1 || true
 docker run --rm -itd --name t1 -p 8000:8000 calhoun-test:0
 
+# Wait for calhoun to start
 sleep 5
 
 echo -e "\nResponse from /status:\n"
