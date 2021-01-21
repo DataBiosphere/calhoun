@@ -5,7 +5,7 @@ from functools import wraps
 from nbconvert import HTMLExporter
 from nbformat.v4 import to_notebook
 from werkzeug.exceptions import *
-
+import json
 
 def perform_notebook_conversion(notebook_json):
     # Get the notebook json into a NotebookNode object that nbconvert can use
@@ -78,3 +78,8 @@ def __process_sam_response(sam_response):
             raise ServiceUnavailable('Service Unavailable. Authorization service unable to contact one or more services')
         else:
             raise InternalServerError('Internal Server Error. Unknown failure contacting authorization service.')
+
+def read_json_file(file_name):
+    with open(file_name) as json_file:
+        data = json.load(json_file)
+        return data

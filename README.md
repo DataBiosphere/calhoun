@@ -35,6 +35,7 @@ Install dependencies
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements-min.txt
+export FLASK_DEBUG=1
 ```
 
 
