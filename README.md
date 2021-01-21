@@ -53,6 +53,17 @@ Or, to more closely emulate running in App Engine
 gunicorn -b :8000 main:app
 ```
 
+Run unit tests locally
+```sh
+python test_convert.py 
+```
+
+Run automation tests locally
+```sh
+./scripts/automation-test.sh
+```
+
+
 Update/freeze dependencies
 ```sh
 scripts/freeze-deps.sh
