@@ -46,11 +46,11 @@ cp config.dev.py config.py
 
 Run a local server
 ```sh
-python3 main.py
+FLASK_DEBUG=1 python3 main.py
 ```
 Or, to more closely emulate running in App Engine
 ```sh
-gunicorn -b :8000 main:app
+FLASK_DEBUG=1 gunicorn -b :8000 main:app
 ```
 
 Run unit tests locally
