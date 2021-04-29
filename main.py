@@ -1,6 +1,7 @@
 from flask import Flask, make_response, request
 from flask_cors import cross_origin
 from flask_talisman import Talisman
+from flask_swagger_ui import get_swaggerui_blueprint
 from utils import perform_notebook_conversion, perform_rmd_conversion, authorized
 
 
@@ -8,6 +9,35 @@ from utils import perform_notebook_conversion, perform_rmd_conversion, authorize
 app = Flask('calhoun')
 Talisman(app)
 app.config.from_pyfile('config.py')
+
+# Swagger
+SWAGGER_URL = '/api/docs'
+API_URL = '/static/api-docs.yaml'
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL, 
+    API_URL,
+    config={
+        'app_name': "Calhoun"
+    },
+    oauth_config={
+      'clientId': app.config['SWAGGER_CLIENT_ID'],
+      'realm': app.config['SWAGGER_REALM'],
+      'appName': "Calhoun",
+      'scopeSeparator': " "
+    }
+)
+
+app.register_blueprint(swaggerui_blueprint)
+
+# Swagger CSP needs to have 'unsafe-inline' in the script-src and style-src fields
+SWAGGER_CSP = {
+    "script-src": ["'self'", "'unsafe-inline'"],
+    "style-src": ["'self'", "'unsafe-inline'"]
+}
+app.view_functions["swagger_ui.show"].talisman_view_options = {
+    "content_security_policy": SWAGGER_CSP
+}
 
 
 @app.route('/_ah/warmup')

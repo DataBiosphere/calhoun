@@ -18,7 +18,7 @@ if [ "$status_code" -ne 200 ] ; then
   exit 1
 fi
 
-if [ "$RUN_AUTHENTICATED_TEST" -eq 1 ] ;
+if [ "$RUN_AUTHENTICATED_TEST" = "1" ] ;
 then
   # ipynb test case
   status_code=$(curl -s --write-out %{http_code} -o /dev/null \
@@ -53,6 +53,6 @@ else
   echo "Skipping authenticated tests."
 fi
 
-echo "All tests passed.\n"
-docker kill t1 || true
+echo -e "All tests passed!\n"
+#docker kill t1 || true
 exit 0
