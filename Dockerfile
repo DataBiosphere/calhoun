@@ -1,14 +1,23 @@
 FROM python:3.7-slim-buster
 
+# Install R
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  r-base \
+  r-base-dev \
+  pandoc \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN R -e 'install.packages("rmarkdown")'
+
 COPY . /work
 WORKDIR /work
 
-RUN cp config.dev.py config.py
-
-RUN python3 -m venv /opt/venv
-
-RUN /opt/venv/bin/pip install -r requirements-min.txt
-RUN /opt/venv/bin/pip install gunicorn
+# Set up python env
+RUN cp config.dev.py config.py \
+  && python3 -m venv /opt/venv \
+  && /opt/venv/bin/pip install -r requirements-min.txt \
+  && /opt/venv/bin/pip install gunicorn
 
 # This SHOULD NOT BE USED IN PRODUCTION. It is used here because it disables the need to set up https for testing
 ENV FLASK_DEBUG=1

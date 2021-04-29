@@ -1,7 +1,7 @@
 from flask import Flask, make_response, request
 from flask_cors import cross_origin
 from flask_talisman import Talisman
-from utils import perform_notebook_conversion, authorized
+from utils import perform_notebook_conversion, perform_rmd_conversion, authorized
 
 
 # Webservice routing
@@ -28,6 +28,13 @@ def status():
 def convert():
     json = request.get_json(force=True)
     return perform_notebook_conversion(json)
+
+@app.route('/api/convert/rmd', methods={'POST'})
+@cross_origin()
+@authorized(app.config['SAM_ROOT'])
+def convert_rmd():
+    stream = request.stream
+    return perform_rmd_conversion(stream)
 
 
 if __name__ == '__main__':
