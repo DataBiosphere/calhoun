@@ -47,7 +47,7 @@ Run a local server
 FLASK_DEBUG=1 python3 main.py
 ```
 
-Or, run a local containerized server to more closely emulate production deployment
+Or, run a local containerized server which is useful for testing R functionality
 ```sh
 docker image build . -t calhoun-test:0
 docker kill t1
