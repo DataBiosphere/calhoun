@@ -54,5 +54,5 @@ else
 fi
 
 echo -e "All tests passed!\n"
-#docker kill t1 || true
+docker kill t1 || true
 exit 0
