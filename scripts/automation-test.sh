@@ -39,7 +39,7 @@ then
   status_code=$(curl -s --write-out %{http_code} -o /dev/null \
     -X POST -H "Content-Type: application/json" \
     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    --data @notebooks/test-rmd.ipynb \
+    --data @notebooks/test-rmd.Rmd \
     http://127.0.0.1:8000/api/convert/rmd)
 
   echo -e "Response from /api/convert/rmd: $status_code"
