@@ -8,3 +8,4 @@ config.py
 .DS_Store
 env/
 env*/
+*.html

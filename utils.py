@@ -24,7 +24,7 @@ def perform_notebook_conversion(notebook_json):
 def perform_rmd_conversion(stream):
     incoming_data = FileStorage(stream)
     
-    # The rmarkdown converter unfortunately only works with file paths.
+    # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
     # The temp files are deleted as soon as the below with block ends.
     with NamedTemporaryFile() as in_file, NamedTemporaryFile(suffix=".html") as out_file:

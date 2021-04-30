@@ -10,9 +10,9 @@ sleep 5
 
 # /status test case
 status_code=$(curl -sI --write-out %{http_code} -o /dev/null http://127.0.0.1:8000/status)
-echo -e "Response from /status: $status_code"
+echo "Response from /status: $status_code"
 
-if [ "$status_code" -ne 200 ] ; then
+if [ "$status_code" != "200" ] ; then
   echo -e "  ** Failure! Expected 200 but was $status_code."
   docker kill t1 || true
   exit 1
@@ -20,39 +20,39 @@ fi
 
 if [ "$RUN_AUTHENTICATED_TEST" = "1" ] ;
 then
-  # ipynb test case
-  status_code=$(curl -s --write-out %{http_code} -o /dev/null \
-    -X POST -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    --data @notebooks/test1.ipynb \
-    http://127.0.0.1:8000/api/convert)
+  for f in `ls notebooks/*.{ipynb,Rmd}`
+  do
+    if [[ "$f" == *.ipynb ]]
+    then
+      api="/api/convert"
+      content_type="application/json"
+    else
+      api="/api/convert/rmd"
+      content_type="text/plain"
+    fi
 
-  echo -e "Response from /api/convert: $status_code"
+    rm $f.html
+    echo -e "\nConverting $f..."
 
-  if [ "$status_code" -ne 200 ] ; then
-    echo -e "  ** Failure! Expected 200 but was $status_code."
-    docker kill t1 || true
-    exit 1
-  fi
+    status_code=$(curl -s --write-out %{http_code} -o $f.html \
+      -X POST -H "Content-Type: $content_type" -H "Accept: text/html" \
+      -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+      --data-binary @$f \
+      http://127.0.0.1:8000$api)
 
-  # rmd test case
-  status_code=$(curl -s --write-out %{http_code} -o /dev/null \
-    -X POST -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-    --data @notebooks/test-rmd.Rmd \
-    http://127.0.0.1:8000/api/convert/rmd)
+     echo "Status code: $status_code"
+     echo "Output saved to: $f.html"
 
-  echo -e "Response from /api/convert/rmd: $status_code"
-
-  if [ "$status_code" -ne 200 ] ; then
-    echo -e "  ** Failure! Expected 200 but was $status_code."
-    docker kill t1 || true
-    exit 1
-  fi
+    if [ "$status_code" != "200" ] ; then
+      echo -e "  ** Failure! Expected 200 but was $status_code."
+      docker kill t1 || true
+      exit 1
+    fi
+  done
 else
   echo "Skipping authenticated tests."
 fi
 
-echo -e "All tests passed!\n"
-docker kill t1 || true
+echo -e "\nAll tests passed!\n"
+#docker kill t1 || true
 exit 0

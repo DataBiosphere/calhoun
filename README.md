@@ -65,7 +65,8 @@ Run unit tests locally
 
 Run automation tests locally
 ```sh
-./scripts/automation-test.sh
+gcloud auth login <any-terra-dev-user>
+RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
 ```
 
 Update/freeze dependencies
