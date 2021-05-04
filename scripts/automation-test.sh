@@ -15,6 +15,14 @@ sleep 5
 
 # /status test case
 status_code=$(curl -sI --write-out %{http_code} -o /dev/null http://127.0.0.1:8000/status)
+
+exit_code=$?
+if [ $? -ne 0 ] ; then
+  echo -e "  ** Failure! Curl command failed with exit code $exit_code."
+  docker kill t1 || true
+  exit 1
+fi
+
 echo "Response from /status: $status_code"
 
 if [ "$status_code" != "200" ] ; then
@@ -44,6 +52,13 @@ then
       -H "Authorization: Bearer $(gcloud auth print-access-token)" \
       --data-binary @$f \
       http://127.0.0.1:8000$api)
+
+      exit_code=$?
+      if [ $? -ne 0 ] ; then
+        echo -e "  ** Failure! Curl command failed with exit code $exit_code."
+        docker kill t1 || true
+        exit 1
+      fi
 
      echo "Status code: $status_code"
      echo "Output saved to: $f.html"
