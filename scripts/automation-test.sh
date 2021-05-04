@@ -3,7 +3,12 @@
 # Build and start calhoun
 docker image build . -t calhoun-test:0
 docker kill t1 || true
-docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8000:8000 calhoun-test:0
+docker run \
+  -e FLASK_DEBUG=1 \
+  -e SAM_ROOT=https://sam.dsde-dev.broadinstitute.org \
+  -e SWAGGER_CLIENT_ID=enter-client-id-here \
+  -e SWAGGER_REALM=broad-dsde-dev \
+  --rm -itd --name t1 -p 8000:8000 calhoun-test:0
 
 # Wait for calhoun to start
 sleep 5

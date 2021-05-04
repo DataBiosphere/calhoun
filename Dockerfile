@@ -14,9 +14,7 @@ COPY . /work
 WORKDIR /work
 
 # Set up python env
-RUN cp config.dev.py config.py \
-  && pip install -r requirements-min.txt \
-  && pip install gunicorn
+RUN pip install -r requirements-min.txt && pip install gunicorn
 
 EXPOSE 8000
 
