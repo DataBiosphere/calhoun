@@ -27,18 +27,15 @@ def perform_rmd_conversion(stream):
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
     # The temp files are deleted as soon as the below with block ends.
-    with NamedTemporaryFile() as in_file, NamedTemporaryFile(suffix=".html") as out_file:
+    with NamedTemporaryFile(suffix=".Rmd") as in_file:
         incoming_data.save(dst=in_file.name)
 
         # Call R rmarkdown package from python.
         # See https://cran.r-project.org/web/packages/rmarkdown/index.html
         rmd = importr("rmarkdown")
-        rmd.render(
-            in_file.name, 
-            output_file=os.path.basename(out_file.name), 
-            output_dir=os.path.dirname(out_file.name), 
-            output_format="html_document")
-        return out_file.read()
+        rmd.render(in_file.name)
+        with open(os.path.splitext(in_file.name)[0] + ".html") as out_file:
+            return out_file.read()
 
 
 # Authorization decorator
