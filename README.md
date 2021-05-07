@@ -51,12 +51,12 @@ Or, run a local containerized server which is useful for testing R functionality
 ```sh
 docker image build . -t calhoun-test:0
 docker kill t1
-docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8000:8000 calhoun-test:0
+docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 ```
 
 Load pages from localhost:
-* http://localhost:8000/status
-* http://localhost:8000/api/docs/
+* http://localhost:8080/status
+* http://localhost:8080/api/docs/
 
 Run unit tests locally
 ```sh

@@ -16,6 +16,6 @@ WORKDIR /work
 # Set up python env
 RUN pip install -r requirements-min.txt && pip install gunicorn
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD gunicorn -b :8000 main:app
+CMD gunicorn -b :8080 main:app

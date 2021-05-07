@@ -8,13 +8,13 @@ docker run \
   -e SAM_ROOT=https://sam.dsde-dev.broadinstitute.org \
   -e SWAGGER_CLIENT_ID=enter-client-id-here \
   -e SWAGGER_REALM=broad-dsde-dev \
-  --rm -itd --name t1 -p 8000:8000 calhoun-test:0
+  --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 
 # Wait for calhoun to start
 sleep 5
 
 # /status test case
-status_code=$(curl -sI --write-out %{http_code} -o /dev/null http://127.0.0.1:8000/status)
+status_code=$(curl -sI --write-out %{http_code} -o /dev/null http://127.0.0.1:8080/status)
 
 exit_code=$?
 if [ $? -ne 0 ] ; then
@@ -51,7 +51,7 @@ then
       -X POST -H "Content-Type: $content_type" -H "Accept: text/html" \
       -H "Authorization: Bearer $(gcloud auth print-access-token)" \
       --data-binary @$f \
-      http://127.0.0.1:8000$api)
+      http://127.0.0.1:8080$api)
 
       exit_code=$?
       if [ $? -ne 0 ] ; then
