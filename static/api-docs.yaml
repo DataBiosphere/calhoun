@@ -82,7 +82,7 @@ paths:
         - convert
       requestBody:
         content:
-          application/json:
+          text/plain:
             schema:
               type: string
               format: binary

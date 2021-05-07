@@ -11,14 +11,16 @@ Talisman(app)
 app.config.from_pyfile('config.py')
 
 # Swagger
-SWAGGER_URL = '/api/docs'
+SWAGGER_URL = '/swagger-ui'
 API_URL = '/static/api-docs.yaml'
 
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL, 
     API_URL,
     config={
-        'app_name': "Calhoun"
+        'app_name': "Calhoun",
+        # TODO how to un-hardcode?
+        'oauth2RedirectUrl': "https://calhoun.rtitle.integ.envs.broadinstitute.org/swagger-ui/oauth2-redirect.html"
     },
     oauth_config={
       'clientId': app.config['SWAGGER_CLIENT_ID'],
