@@ -35,7 +35,7 @@ pyparsing==2.4.7
 pyrsistent==0.16.0
 six==1.15.0
 testpath==0.4.4
-urllib3==1.25.10
+urllib3==1.26.5
 webencodings==0.5.1
 Werkzeug==1.0.1
 zipp==3.1.0
