@@ -14,7 +14,7 @@ docker run \
 sleep 30
 
 # /status test case
-status_code=$(curl -sI --write-out %{http_code} -o /dev/null http://localhost:8080/status)
+status_code=$(curl -sI --write-out %{http_code} -o /dev/null http://127.0.0.1:8080/status)
 
 exit_code=$?
 if [ $? -ne 0 ] ; then
@@ -51,7 +51,7 @@ then
       -X POST -H "Content-Type: $content_type" -H "Accept: text/html" \
       -H "Authorization: Bearer $(gcloud auth print-access-token)" \
       --data-binary @$f \
-      http://localhost:8080$api)
+      http://127.0.0.1:8080$api)
 
       exit_code=$?
       if [ $? -ne 0 ] ; then
