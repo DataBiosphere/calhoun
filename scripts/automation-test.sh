@@ -11,7 +11,7 @@ docker run \
   --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 
 # Wait for calhoun to start
-sleep 5
+sleep 30
 
 # /status test case
 status_code=$(curl -sI --write-out %{http_code} -o /dev/null http://127.0.0.1:8080/status)
