@@ -1,4 +1,4 @@
-FROM python:3.7-slim-buster
+FROM us.gcr.io/broad-dsp-gcr-public/base/python:debian
 
 # Install R
 RUN apt-get update && apt-get install -y --no-install-recommends \
