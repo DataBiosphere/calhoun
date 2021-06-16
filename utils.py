@@ -36,10 +36,12 @@ def perform_rmd_conversion(stream):
         rmd.render(in_file.name)
 
         out_path = os.path.splitext(in_file.name)[0] + ".html"
-        out_file = open(out_path)
-        res = out_file.read()
-        os.remove(out_path)
-        return res
+        try:
+            out_file = open(out_path)
+            return out_file.read()
+        finally:
+            out_file.close()
+            os.remove(out_path)
 
 
 # Authorization decorator
