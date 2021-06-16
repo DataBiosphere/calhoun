@@ -4,8 +4,12 @@ from requests.exceptions import ConnectionError
 from functools import wraps
 from nbconvert import HTMLExporter
 from nbformat.v4 import to_notebook
+from tempfile import NamedTemporaryFile
+from werkzeug.datastructures import FileStorage
 from werkzeug.exceptions import *
+from rpy2.robjects.packages import importr
 import json
+import os
 
 def perform_notebook_conversion(notebook_json):
     # Get the notebook json into a NotebookNode object that nbconvert can use
@@ -15,6 +19,29 @@ def perform_notebook_conversion(notebook_json):
     html_exporter = HTMLExporter()
     (nb_html, resources_dict) = html_exporter.from_notebook_node(nb)
     return nb_html
+
+
+def perform_rmd_conversion(stream):
+    incoming_data = FileStorage(stream)
+    
+    # The rmarkdown converter unfortunately only works with files.
+    # So we create temp files for the source markdown and destination html data.
+    # The temp files are deleted as soon as the below with block ends.
+    with NamedTemporaryFile(suffix=".Rmd") as in_file:
+        incoming_data.save(dst=in_file.name)
+
+        # Call R rmarkdown package from python.
+        # See https://cran.r-project.org/web/packages/rmarkdown/index.html
+        rmd = importr("rmarkdown")
+        rmd.render(in_file.name)
+
+        out_path = os.path.splitext(in_file.name)[0] + ".html"
+        try:
+            out_file = open(out_path)
+            return out_file.read()
+        finally:
+            out_file.close()
+            os.remove(out_path)
 
 
 # Authorization decorator
