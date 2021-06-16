@@ -16,9 +16,6 @@ WORKDIR /work
 # Set up python env
 RUN pip install -r requirements-min.txt && pip install gunicorn
 
-# TODO: needed to disable https redirection, there is probably a better way 
-ENV FLASK_DEBUG=1
-
 EXPOSE 8080
 
 CMD gunicorn -b :8080 main:app

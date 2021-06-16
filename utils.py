@@ -34,8 +34,12 @@ def perform_rmd_conversion(stream):
         # See https://cran.r-project.org/web/packages/rmarkdown/index.html
         rmd = importr("rmarkdown")
         rmd.render(in_file.name)
-        with open(os.path.splitext(in_file.name)[0] + ".html") as out_file:
-            return out_file.read()
+
+        out_path = os.path.splitext(in_file.name)[0] + ".html"
+        out_file = open(out_path)
+        res = out_file.read()
+        os.remove(out_path)
+        return res
 
 
 # Authorization decorator

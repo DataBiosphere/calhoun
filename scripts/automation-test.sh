@@ -4,7 +4,6 @@
 docker image build . -t calhoun-test:0
 docker kill t1 || true
 docker run \
-  -e FLASK_DEBUG=1 \
   -e SAM_ROOT=https://sam.dsde-dev.broadinstitute.org \
   -e SWAGGER_CLIENT_ID=enter-client-id-here \
   -e SWAGGER_REALM=broad-dsde-dev \

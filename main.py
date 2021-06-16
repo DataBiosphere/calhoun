@@ -7,7 +7,7 @@ from utils import perform_notebook_conversion, perform_rmd_conversion, authorize
 
 # Webservice routing
 app = Flask('calhoun')
-Talisman(app)
+Talisman(app, force_https=False)
 app.config.from_pyfile('config.py')
 
 # Swagger
@@ -18,9 +18,7 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL, 
     API_URL,
     config={
-        'app_name': "Calhoun",
-        # TODO how to un-hardcode?
-        'oauth2RedirectUrl': "https://calhoun.rtitle.integ.envs.broadinstitute.org/swagger-ui/oauth2-redirect.html"
+        'app_name': "Calhoun"
     },
     oauth_config={
       'clientId': app.config['SWAGGER_CLIENT_ID'],
