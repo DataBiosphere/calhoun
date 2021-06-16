@@ -36,6 +36,3 @@ jobs:
     - name: Run unit tests
       run: |
         ./scripts/unit-test.sh
-    - name: Run automation tests
-      run: |
-        ./scripts/automation-test.sh
