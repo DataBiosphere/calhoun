@@ -10,6 +10,7 @@ from werkzeug.exceptions import *
 from rpy2.robjects.packages import importr
 import json
 import os
+from bs4 import BeautifulSoup
 
 def perform_notebook_conversion(notebook_json):
     # Get the notebook json into a NotebookNode object that nbconvert can use
@@ -18,7 +19,10 @@ def perform_notebook_conversion(notebook_json):
     # set up a default nbconvert HTML exporter and run the conversion
     html_exporter = HTMLExporter()
     (nb_html, resources_dict) = html_exporter.from_notebook_node(nb)
-    return nb_html
+    
+    safe_html = remove_inline_scripts(nb_html)
+    
+    return safe_html
 
 
 def perform_rmd_conversion(stream):
@@ -110,3 +114,25 @@ def read_json_file(file_name):
     with open(file_name) as json_file:
         data = json.load(json_file)
         return data
+    
+def remove_inline_scripts(html_doc):
+    soup = BeautifulSoup(html_doc, 'html.parser')
+
+    # remove math jax script from dom
+    # this would be done together with the for loop below, but semantically it makes sense to separate them
+    # all previews will have this first script, as it is part of the nbconvert lib we use
+    # on the other hand, any other scripts to remove are a result of python libs in a specific notebook relying on javascript to render output 
+    mathJaxUnsafeScript = soup.select_one('script[type="text/x-mathjax-config"]')
+    mathJaxUnsafeScript.decompose()
+    
+    allJavascriptTags = soup.findAll('script')
+    allUntrustedJavascriptTags = list(filter(lambda scriptTag: not ('src' in scriptTag.attrs and 'https://cdnjs.cloudflare.com' in scriptTag['src']), allJavascriptTags))
+    
+    # Remove all script tags that dont have a src containing https://cdnjs.cloudflare.com, which is trusted via the terra-ui CSP
+    # See this PR for implementation in UI https://github.com/DataBiosphere/terra-ui/pull/2438/files#diff-d506904027666817584075d2f1141152f8d72d02f355f39f3585453278ecdedbR24
+    if len(allUntrustedJavascriptTags) > 0:
+        print(f"Detected preview has Javascript from an untrusted source. Removing {len(allUntrustedJavascriptTags)} count(s) as required by csp")
+        for untrustedScriptTag in allUntrustedJavascriptTags:
+            untrustedScriptTag.decompose()
+             
+    return str(soup)
