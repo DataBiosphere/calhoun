@@ -10,6 +10,7 @@ from werkzeug.exceptions import *
 from rpy2.robjects.packages import importr
 import json
 import os
+import logging
 from bs4 import BeautifulSoup
 
 def perform_notebook_conversion(notebook_json):
@@ -133,7 +134,7 @@ def remove_inline_scripts(html_doc):
     # Remove all script tags that dont have a src containing https://cdnjs.cloudflare.com, which is trusted via the terra-ui CSP
     # See this PR for implementation in UI https://github.com/DataBiosphere/terra-ui/pull/2438/files#diff-d506904027666817584075d2f1141152f8d72d02f355f39f3585453278ecdedbR24
     if len(allUntrustedJavascriptTags) > 0:
-        print(f"Detected preview has Javascript from an untrusted source. Removing {len(allUntrustedJavascriptTags)} count(s) as required by csp")
+        logging.info(f"Detected preview has Javascript from an untrusted source. Removing {len(allUntrustedJavascriptTags)} count(s) as required by csp")
         for untrustedScriptTag in allUntrustedJavascriptTags:
             untrustedScriptTag.decompose()
              
