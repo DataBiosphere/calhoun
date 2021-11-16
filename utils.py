@@ -123,7 +123,9 @@ def remove_inline_scripts(html_doc):
     # all previews will have this first script, as it is part of the nbconvert lib we use
     # on the other hand, any other scripts to remove are a result of python libs in a specific notebook relying on javascript to render output 
     mathJaxUnsafeScript = soup.select_one('script[type="text/x-mathjax-config"]')
-    mathJaxUnsafeScript.decompose()
+    
+    if mathJaxUnsafeScript is not None:
+        mathJaxUnsafeScript.decompose()
     
     allJavascriptTags = soup.findAll('script')
     allUntrustedJavascriptTags = list(filter(lambda scriptTag: not ('src' in scriptTag.attrs and 'https://cdnjs.cloudflare.com' in scriptTag['src']), allJavascriptTags))
