@@ -50,3 +50,5 @@ tzlocal==2.1
 urllib3==1.26.5
 webencodings==0.5.1
 Werkzeug==2.0.1
+zipp==3.1.0
+beautifulsoup4==4.10.0
