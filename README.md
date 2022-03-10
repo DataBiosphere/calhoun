@@ -15,7 +15,7 @@ This project is essentially nbconvert and rmarkdown as a REST service. It takes 
 
 ### OpenAPI
 
-A swagger-ui page is available at /api/docs on any running instance. For existing instances, those are:
+A swagger-ui page is available at /swagger-ui/ on any running instance. For existing instances, those are:
 
 * dev: https://calhoun.dsde-dev.broadinstitute.org/swagger-ui/
 * alpha: https://calhoun.dsde-alpha.broadinstitute.org/swagger-ui/
