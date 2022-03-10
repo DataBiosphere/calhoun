@@ -17,11 +17,11 @@ This project is essentially nbconvert and rmarkdown as a REST service. It takes 
 
 A swagger-ui page is available at /api/docs on any running instance. For existing instances, those are:
 
-* dev: https://calhoun.dsde-dev.broadinstitute.org/api/docs
-* alpha: https://calhoun.dsde-alpha.broadinstitute.org/api/docs
-* perf: https://calhoun.dsde-perf.broadinstitute.org/api/docs
-* staging: https://calhoun.dsde-staging.broadinstitute.org/api/docs
-* prod: https://calhoun.dsde-prod.broadinstitute.org/api/docs
+* dev: https://calhoun.dsde-dev.broadinstitute.org/swagger-ui/
+* alpha: https://calhoun.dsde-alpha.broadinstitute.org/swagger-ui/
+* perf: https://calhoun.dsde-perf.broadinstitute.org/swagger-ui/
+* staging: https://calhoun.dsde-staging.broadinstitute.org/swagger-ui/
+* prod: https://calhoun.dsde-prod.broadinstitute.org/swagger-ui/
 
 ### Framework
 This project uses the [Flask](https://flask.palletsprojects.com/en/1.1.x/) Python web framework.
