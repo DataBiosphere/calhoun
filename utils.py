@@ -38,15 +38,16 @@ def perform_rmd_conversion(stream):
         # Call R rmarkdown package from python.
         # See https://cran.r-project.org/web/packages/rmarkdown/index.html
         rmd = importr("rmarkdown")
-        rmd.render(in_file.name)
-
-        out_path = os.path.splitext(in_file.name)[0] + ".html"
+        renderedrmd = rmd.render(in_file.name)
+        out_path = renderedrmd[0]
+        
         try:
             out_file = open(out_path)
-            return out_file.read()
+            read_outfile = out_file.read()
         finally:
             out_file.close()
             os.remove(out_path)
+        return read_outfile
 
 
 # Authorization decorator
