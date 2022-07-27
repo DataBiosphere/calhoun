@@ -61,19 +61,27 @@ Ensure hosts file has the following record:
 
 Update main.py to use Broad's wildcard SSL certificates.
 These certificates are the same ones used for any of our web applications.
-For ease of use, copy to `/etc/ssl/certs`.
+To get these certificates, run the `configure.rb` script by following the instructions under the title [Running Leo Locally](https://broadworkbench.atlassian.net/wiki/spaces/IA/pages/104399223/Callisto+Developer+Handbook#CallistoDeveloperHandbook-RunningLeoLocally)
+
+Once complete, copy `leonardo/config/server.*` to `/etc/ssl/certs`.
+
+Configure flask to look for the SSL Certificates
+
 ```py
+# main.py
 if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
 ```
 
+Edit config.py to use development authentication, and enable debugging.
+``` py
+SAM_ROOT = 'https://sam.dsde-dev.broadinstitute.org'
+FLASK_DEBUG=1
+```
+
 Run a local server
 ```sh
-FLASK_DEBUG=1 python3 main.py
-```
-Run local server with development authentication
-```sh
-FLASK_DEBUG=1 SAM_ROOT='https://sam.dsde-dev.broadinstitute.org' python3 main.py
+python3 main.py
 ```
 
 Or, run a local containerized server which is useful for testing R functionality
