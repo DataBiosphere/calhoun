@@ -38,8 +38,8 @@ def perform_rmd_conversion(stream):
         # Call R rmarkdown package from python.
         # See https://cran.r-project.org/web/packages/rmarkdown/index.html
         rmd = importr("rmarkdown")
-        renderedrmd = rmd.render(in_file.name)
-        out_path = renderedrmd[0]
+        rendered_html = rmd.render(in_file.name)
+        out_path = rendered_html[0]
         
         try:
             out_file = open(out_path)
