@@ -69,6 +69,7 @@ gcloud auth login <any-terra-dev-user>
 RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
 ```
 
+
 Update/freeze dependencies
 ```sh
 scripts/freeze-deps.sh
