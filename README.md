@@ -26,7 +26,7 @@ A swagger-ui page is available at /swagger-ui/ on any running instance. For exis
 ### Framework
 This project uses the [Flask](https://flask.palletsprojects.com/en/1.1.x/) Python web framework.
 
-### Developing
+## Developing
 Install dependencies
 
 ```sh
@@ -36,15 +36,44 @@ pip install -r requirements-min.txt
 export FLASK_DEBUG=1
 ```
 
+### R dependencies
+
+Install [Pandoc](https://pandoc.org/installing.html)
+```sh
+brew install pandoc
+```
+
+```sh
+R
+> install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))
+```
+
 
 Write a config file
 ```sh
 cp config.dev.py config.py
 ```
 
+Ensure hosts file has the following record:
+```
+127.0.0.1       local.dsde-dev.broadinstitute.org
+```
+
+Update main.py to use Broad's wildcard SSL certificates.
+These certificates are the same ones used for any of our web applications.
+For ease of use, copy to `/etc/ssl/certs`.
+```py
+if __name__ == '__main__':
+    app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
+```
+
 Run a local server
 ```sh
 FLASK_DEBUG=1 python3 main.py
+```
+Run local server with development authentication
+```sh
+FLASK_DEBUG=1 SAM_ROOT='https://sam.dsde-dev.broadinstitute.org' python3 main.py
 ```
 
 Or, run a local containerized server which is useful for testing R functionality
