@@ -73,7 +73,7 @@ if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
 ```
 
-Edit config.py to use development authentication, and enable debugging.
+Edit config.py to use development authentication, and enable flask debug mode.
 ``` py
 SAM_ROOT = 'https://sam.dsde-dev.broadinstitute.org'
 FLASK_DEBUG=1
