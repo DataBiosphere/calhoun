@@ -64,7 +64,7 @@ jobs:
         docker push ${{ steps.construct-tags.outputs.environment-tag }}
     - name: Dispatch to terra-helmfile
       if: github.event_name == 'push'
-      uses: broadinstitute/repository-dispatch@master
+      uses: broadinstitute/repository-dispatch@v0
       with:
         token: ${{ secrets.BROADBOT_TOKEN }}
         repository: broadinstitute/terra-helmfile
