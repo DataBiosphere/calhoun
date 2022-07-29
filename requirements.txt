@@ -30,7 +30,7 @@ jupyter-client==6.1.12
 jupyter-core==4.7.1
 jupyterlab-pygments==0.1.2
 MarkupSafe==2.0.1
-mistune==0.8.4
+mistune==2.0.3
 nbclient==0.5.3
 nest-asyncio==1.5.1
 packaging==20.9
