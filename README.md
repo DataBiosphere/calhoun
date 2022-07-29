@@ -90,9 +90,9 @@ docker kill t1
 docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 ```
 
-Load pages from localhost:
-* http://localhost:8080/status
-* http://localhost:8080/api/docs/
+Access the application locally:
+* https://local.dsde-dev.broadinstitute.org:8080/status
+* https://local.dsde-dev.broadinstitute.org:8080/api/docs/
 
 Run unit tests locally
 ```sh
