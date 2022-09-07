@@ -89,7 +89,7 @@ if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
 ```
 
-Edit config.py to use development authentication.
+Edit config.local.py to use development authentication.
 ``` py
 SAM_ROOT = 'https://sam.dsde-dev.broadinstitute.org'
 ```
@@ -107,7 +107,6 @@ $ docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 ```
 
 Access the application locally:
-* https://local.dsde-dev.broadinstitute.org:8080/status
 * https://local.dsde-dev.broadinstitute.org:8080/swagger-ui/
 
 Run unit tests locally
