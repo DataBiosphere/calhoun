@@ -49,9 +49,15 @@ R
 ```
 
 
-Write a config file
+Copy the config file and main.py file.
 ```sh
-cp config.dev.py config.py
+cp config.py config.local.py
+cp main.py main.local.py
+```
+
+Update main.local.py
+```
+app.config.from_pyfile('config.local.py')
 ```
 
 Ensure hosts file has the following record:
@@ -68,7 +74,7 @@ Once complete, copy `leonardo/config/server.*` to `/etc/ssl/certs`.
 Configure flask to look for the SSL Certificates
 
 ```py
-# main.py
+# main.local.py
 if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
 ```
@@ -80,7 +86,7 @@ SAM_ROOT = 'https://sam.dsde-dev.broadinstitute.org'
 
 Run a local server
 ```sh
-python3 main.py
+python3 main.local.py
 ```
 
 Or, run a local containerized server which is useful for testing R functionality
@@ -92,7 +98,7 @@ docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 
 Access the application locally:
 * https://local.dsde-dev.broadinstitute.org:8080/status
-* https://local.dsde-dev.broadinstitute.org:8080/api/docs/
+* https://local.dsde-dev.broadinstitute.org:8080/swagger-ui/
 
 Run unit tests locally
 ```sh
