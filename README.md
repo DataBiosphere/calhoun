@@ -77,7 +77,8 @@ To get these certificates, run the `configure.rb` script by following the instru
 
 Copy the wildcard SSL certificates from the Leonardo config.
 ```
-$ cp leonardo/config/server.* to /etc/ssl/certs
+$ cd <Leonardo repository> 
+$ cp config/server.* to /etc/ssl/certs
 ```
 
 Configure flask to look for the SSL Certificates
