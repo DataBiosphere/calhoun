@@ -40,19 +40,25 @@ export FLASK_DEBUG=1
 
 Install [Pandoc](https://pandoc.org/installing.html)
 ```sh
-brew install pandoc
+$ brew install pandoc
 ```
+
+For the next step, [R is required.](https://cran.r-project.org/bin/macosx/)
 
 ```sh
 R
 > install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))
 ```
 
+Select one of the USA sources (74-79)
+Install from sources: Yes
+
+Once finished, ctrl+D to exit R command line.
 
 Copy the config file and main.py file.
 ```sh
-cp config.py config.local.py
-cp main.py main.local.py
+$ cp config.py config.local.py
+$ cp main.py main.local.py
 ```
 
 Update main.local.py
@@ -60,7 +66,7 @@ Update main.local.py
 app.config.from_pyfile('config.local.py')
 ```
 
-Ensure hosts file has the following record:
+Ensure hosts file has the following record above `127.0.0.1 localhost`:
 ```
 127.0.0.1       local.dsde-dev.broadinstitute.org
 ```
@@ -86,14 +92,14 @@ SAM_ROOT = 'https://sam.dsde-dev.broadinstitute.org'
 
 Run a local server
 ```sh
-python3 main.local.py
+$ python3 main.local.py
 ```
 
 Or, run a local containerized server which is useful for testing R functionality
 ```sh
-docker image build . -t calhoun-test:0
-docker kill t1
-docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
+$ docker image build . -t calhoun-test:0
+$ docker kill t1
+$ docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 ```
 
 Access the application locally:
@@ -102,18 +108,18 @@ Access the application locally:
 
 Run unit tests locally
 ```sh
-./scripts/unit-test.sh
+$ ./scripts/unit-test.sh
 ```
 
 Run automation tests locally
 ```sh
-gcloud auth login <any-terra-dev-user>
-RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
+$ gcloud auth login <any-terra-dev-user>
+$ RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
 ```
 
 Update/freeze dependencies
 ```sh
-scripts/freeze-deps.sh
+$ scripts/freeze-deps.sh
 ```
 This creates a clean virtualenv, installs dependencies from `dependencies-min.txt`, and freezes the resulting environment in `requirements.txt` (which Google App Engine uses during deployment).
 
