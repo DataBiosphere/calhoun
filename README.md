@@ -75,7 +75,10 @@ Update main.py to use Broad's wildcard SSL certificates.
 These certificates are the same ones used for any of our web applications.
 To get these certificates, run the `configure.rb` script by following the instructions under the title [Running Leo Locally](https://broadworkbench.atlassian.net/wiki/spaces/IA/pages/104399223/Callisto+Developer+Handbook#CallistoDeveloperHandbook-RunningLeoLocally)
 
-Once complete, copy `leonardo/config/server.*` to `/etc/ssl/certs`.
+Copy the wildcard SSL certificates from the Leonardo config.
+```
+$ cp leonardo/config/server.* to /etc/ssl/certs
+```
 
 Configure flask to look for the SSL Certificates
 
