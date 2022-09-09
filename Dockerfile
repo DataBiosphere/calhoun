@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN R -e 'install.packages("rmarkdown")'
+RUN R -e 'install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))'
 
 COPY . /work
 WORKDIR /work
