@@ -5,6 +5,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   r-base \
   r-base-dev \
   pandoc \
+  && apt update \
+  && apt install -yq --no-install-recommends \
+  libcurl4-openssl-dev \
+  libssl-dev \
+  libgeos-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
