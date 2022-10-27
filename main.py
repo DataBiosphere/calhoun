@@ -51,21 +51,31 @@ def status():
     response.mimetype = 'text/plain'
     return response
 
-
 @app.route('/api/convert', methods={'POST'})
 @cross_origin()
 @authorized(app.config['SAM_ROOT'])
 def convert():
     json = request.get_json(force=True)
-    return perform_notebook_conversion(json)
+    try:
+      return perform_notebook_conversion(json)
+    except Exception as e:
+      resp = make_response('Response')
+      resp.status_code = 400
+      resp.data = e.__class__.__name__ + ": " + str(e)
+      return resp
 
 @app.route('/api/convert/rmd', methods={'POST'})
 @cross_origin()
 @authorized(app.config['SAM_ROOT'])
 def convert_rmd():
     stream = request.stream
-    return perform_rmd_conversion(stream)
-
+    try:
+      return perform_rmd_conversion(stream)
+    except Exception as e:
+      resp = make_response('Response')
+      resp.status_code = 400
+      resp.data = e.__class__.__name__ + ": " + str(e)
+      return resp
 
 if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0')
