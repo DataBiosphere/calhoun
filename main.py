@@ -1,4 +1,4 @@
-from flask import Flask, make_response, request
+from flask import Flask, make_response, render_template, request
 from flask_cors import cross_origin
 from flask_talisman import Talisman
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -59,10 +59,7 @@ def convert():
     try:
       return perform_notebook_conversion(json)
     except Exception as e:
-      resp = make_response('Response')
-      resp.status_code = 400
-      resp.data = e.__class__.__name__ + ": " + str(e)
-      return resp
+      return render_template('error.html', error=e.__class__.__name__ + ": " + str(e) + ". ") ,400
 
 @app.route('/api/convert/rmd', methods={'POST'})
 @cross_origin()
@@ -72,10 +69,7 @@ def convert_rmd():
     try:
       return perform_rmd_conversion(stream)
     except Exception as e:
-      resp = make_response('Response')
-      resp.status_code = 400
-      resp.data = e.__class__.__name__ + ": " + str(e)
-      return resp
+      return render_template('error.html', error=e.__class__.__name__ + ": " + str(e) + ". ") ,400
 
 if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0')
