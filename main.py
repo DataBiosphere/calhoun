@@ -59,7 +59,7 @@ def convert():
     try:
       return perform_notebook_conversion(json)
     except Exception as e:
-      return render_template('error.html', error=e.__class__.__name__ + ": " + str(e) + ". ") ,400
+      return render_template('jupyter-error.html', error=e.__class__.__name__ + ": " + str(e) + ". ") ,400
 
 @app.route('/api/convert/rmd', methods={'POST'})
 @cross_origin()
@@ -69,7 +69,7 @@ def convert_rmd():
     try:
       return perform_rmd_conversion(stream)
     except Exception as e:
-      return render_template('error.html', error=e.__class__.__name__ + ": " + str(e) + ". ") ,400
+      return render_template('rstudio-error.html', error=e.__class__.__name__ + ": " + str(e) + ". ") ,400
 
 if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0')
