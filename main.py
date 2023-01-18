@@ -59,8 +59,8 @@ def convert():
     try:
       return perform_notebook_conversion(json)
     except Exception as e:
-      errMessage = e.__class__.__name__ + ": " + ''.join(str(e).splitlines()) + "."
-      return render_template('jupyter-error.html', error=errMessage), "400 " + errMessage 
+      errMessage = f"{e.__class__.__name__} : {''.join(str(e).splitlines())} ."
+      return render_template('jupyter-error.html', error=errMessage), f"400 {errMessage}"
 
 
 @app.route('/api/convert/rmd', methods={'POST'})
@@ -71,8 +71,8 @@ def convert_rmd():
     try:
       return perform_rmd_conversion(stream)
     except Exception as e:
-      errMessage = e.__class__.__name__ + ": " + ''.join(str(e).splitlines()) + "."
-      return render_template('rstudio-error.html', error=errMessage) , "400 " + errMessage
+      errMessage = f"{e.__class__.__name__} : {''.join(str(e).splitlines())} ."
+      return render_template('rstudio-error.html', error=errMessage) , f"400 {errMessage}"
 
 if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0')
