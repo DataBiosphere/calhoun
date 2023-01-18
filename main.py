@@ -51,7 +51,6 @@ def status():
     response.mimetype = 'text/plain'
     return response
 
-
 @app.route('/api/convert', methods={'POST'})
 @cross_origin()
 @authorized(app.config['SAM_ROOT'])
