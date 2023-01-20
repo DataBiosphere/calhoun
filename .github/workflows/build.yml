@@ -33,7 +33,7 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         # Centralized in dsp-tools-k8s; ask in #dsp-devops-champions for help troubleshooting
-        # workload_identity_provider: 'projects/1038484894585/locations/global/workloadIdentityPools/github-wi-pool/providers/github-wi-provider'
+        workload_identity_provider: 'projects/1038484894585/locations/global/workloadIdentityPools/github-wi-pool/providers/github-wi-provider'
         service_account: ${{ secrets.GCR_PUBLISH_EMAIL }}
     - name: Auth to GCR
       uses: google-github-actions/setup-gcloud@v1
