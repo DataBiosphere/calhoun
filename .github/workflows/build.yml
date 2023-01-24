@@ -29,13 +29,12 @@ jobs:
     - name: Get Short Sha
       id: short-sha
       run: echo "::set-output name=sha::$(git rev-parse --short=12 HEAD)"
-    - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          credentials_json: '${{ secrets.GCR_PUBLISH_KEY }}'
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+    - name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCR_PUBLISH_KEY }}'
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
     - name: Auth Docker for GCR
       run: gcloud auth configure-docker --quiet
     - name: Construct tags
