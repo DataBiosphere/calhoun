@@ -29,18 +29,13 @@ jobs:
     - name: Get Short Sha
       id: short-sha
       run: echo "::set-output name=sha::$(git rev-parse --short=12 HEAD)"
-    - name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
-      with:
-        # Centralized in dsp-tools-k8s; ask in #dsp-devops-champions for help troubleshooting
-        workload_identity_provider: 'projects/1038484894585/locations/global/workloadIdentityPools/github-wi-pool/providers/github-wi-provider'
-        service_account: 'image-build-account@broad-dsp-gcr-public.iam.gserviceaccount.com'
-    - name: Auth to GCR
-      uses: google-github-actions/setup-gcloud@v1
-      # with:
-      #   version: '270.0.0'
-      #   service_account_email: ${{ secrets.GCR_PUBLISH_EMAIL }}
-      #   service_account_key: ${{ secrets.GCR_PUBLISH_KEY }}
+    - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCR_PUBLISH_KEY }}'
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
     - name: Auth Docker for GCR
       run: gcloud auth configure-docker --quiet
     - name: Construct tags
