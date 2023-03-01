@@ -19,7 +19,8 @@ COPY . /work
 WORKDIR /work
 
 # Set up python env
-RUN pip install -r requirements-min.txt && pip install gunicorn
+RUN poetry install
+# RUN pip install -r requirements-min.txt && pip install gunicorn
 
 EXPOSE 8080
 
