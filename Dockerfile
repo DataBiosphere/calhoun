@@ -19,6 +19,7 @@ COPY . /work
 WORKDIR /work
 
 # Set up python env
+RUN curl -sSL https://install.python-poetry.org | python3 -
 RUN poetry install
 # RUN pip install -r requirements-min.txt && pip install gunicorn
 
