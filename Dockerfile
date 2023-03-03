@@ -22,9 +22,7 @@ WORKDIR /work
 
 # Set up python env
 RUN curl -sSL https://install.python-poetry.org | python3 -
-RUN export PATH="/root/.local/bin:$PATH"
-RUN poetry install
-# RUN pip install -r requirements-min.txt && pip install gunicorn
+RUN /root/.local/bin/poetry install
 
 EXPOSE 8080
 
