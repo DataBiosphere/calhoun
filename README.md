@@ -105,11 +105,20 @@ gcloud auth login <any-terra-dev-user>
 RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
 ```
 
-Update/freeze dependencies
+Install Poetry
 ```sh
-scripts/freeze-deps.sh
+brew install poetry
 ```
-This creates a clean virtualenv, installs dependencies from `dependencies-min.txt`, and freezes the resulting environment in `requirements.txt` (which Google App Engine uses during deployment).
+
+Install dependencies
+```sh
+poetry install
+```
+
+Update dependencies
+```sh
+poetry update
+```
 
 ### Deployment
 
