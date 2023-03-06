@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libcurl4-openssl-dev \
   libssl-dev \
   libgeos-dev \
-  curl \
-  build-essential \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -21,8 +19,9 @@ COPY . /work
 WORKDIR /work
 
 # Set up python env
-RUN curl -sSL https://install.python-poetry.org | python3 -
-RUN /root/.local/bin/poetry install
+RUN pip install "poetry==1.4.0"
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-interaction --no-ansi
 
 EXPOSE 8080
 
