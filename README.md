@@ -105,7 +105,15 @@ gcloud auth login <any-terra-dev-user>
 RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
 ```
 
-Install Poetry
+## Managing dependencies
+
+We use [Poetry](https://python-poetry.org/docs/) to manage our dependencies. From their website: 
+
+> Poetry is a tool for dependency management and packaging in Python. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. Poetry offers a lockfile to ensure repeatable installs, and can build your project for distribution.
+
+
+Install [Poetry](https://python-poetry.org/docs/)
+
 ```sh
 brew install poetry
 ```
