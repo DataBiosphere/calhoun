@@ -128,7 +128,7 @@ Update dependencies
 poetry update
 ```
 
-Export to requirements.txt
+Export to requirements.txt. Google App Engine uses this for deployment.
 ```
 poetry export -f requirements.txt --output requirements.txt --without-hashes
 ```
