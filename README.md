@@ -128,6 +128,11 @@ Update dependencies
 poetry update
 ```
 
+Export to requirements.txt
+```
+poetry export -f requirements.txt --output requirements.txt --without-hashes
+```
+
 ### Deployment
 
 TODO add section about k8s deployment
