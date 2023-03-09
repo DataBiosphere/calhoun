@@ -105,11 +105,33 @@ gcloud auth login <any-terra-dev-user>
 RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
 ```
 
-Update/freeze dependencies
+## Managing dependencies
+
+We use [Poetry](https://python-poetry.org/docs/) to manage our dependencies. From their website: 
+
+> Poetry is a tool for dependency management and packaging in Python. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. Poetry offers a lockfile to ensure repeatable installs, and can build your project for distribution.
+
+
+Install [Poetry](https://python-poetry.org/docs/)
+
 ```sh
-scripts/freeze-deps.sh
+brew install poetry
 ```
-This creates a clean virtualenv, installs dependencies from `dependencies-min.txt`, and freezes the resulting environment in `requirements.txt` (which Google App Engine uses during deployment).
+
+Install dependencies
+```sh
+poetry install
+```
+
+Update dependencies
+```sh
+poetry update
+```
+
+Export to requirements.txt. Google App Engine uses this for deployment.
+```
+poetry export -f requirements.txt --output requirements.txt --without-hashes
+```
 
 ### Deployment
 

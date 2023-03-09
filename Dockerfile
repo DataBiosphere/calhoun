@@ -19,7 +19,9 @@ COPY . /work
 WORKDIR /work
 
 # Set up python env
-RUN pip install -r requirements-min.txt && pip install gunicorn
+RUN pip install "poetry==1.4.0"
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-interaction --no-ansi
 
 EXPOSE 8080
 
