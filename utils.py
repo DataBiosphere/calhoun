@@ -29,7 +29,7 @@ def perform_notebook_conversion(notebook_json):
 def perform_rmd_conversion(stream):
     binary_data = stream.read()
     data = binary_data.decode('ascii')
-    sanitized_data = sanitize_rmd(data)
+    sanitized_data = __sanitize_rmd(data)
     
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
@@ -57,10 +57,10 @@ def perform_rmd_conversion(stream):
 # Actually executes any code in a labeled codeblock. By processing out any of these labels, we ensure we display a preview without a possible arbitrary code execution vulnerability
 # See this document, issue number one, for more details on the vulnerability: https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem 
 # Takes a string and returns binary
-def sanitize_rmd(data):
-    print('printing data to sanitize pre-split', data)
+def __sanitize_rmd(data: str) -> bytes:
+    logging.info(f'printing data to sanitize pre-split: {data}')
     lines = data.split('\n')
-    print('printing lines of file', lines)
+    logging.info(f'printing lines of file: {lines}')
     sanitized_file = []
     for line in lines:
         if line.startswith('```'):
@@ -70,7 +70,7 @@ def sanitize_rmd(data):
         sanitized_file.append(sanitized_line)    
         
     file = '\n'.join(sanitized_file)
-    print('putting data put back together', file)
+    logging.info(f'putting data put back together {file}')
     
     return file.encode('ascii')
 
