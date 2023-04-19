@@ -44,6 +44,7 @@ brew install pandoc
 ```
 
 ```sh
+brew install R
 R
 > install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))
 ```

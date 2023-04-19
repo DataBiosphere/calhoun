@@ -27,13 +27,20 @@ def perform_notebook_conversion(notebook_json):
 
 
 def perform_rmd_conversion(stream):
-    incoming_data = FileStorage(stream)
+    binary_data = stream.read()
+    # data = binary_data.decode('ascii')
+    sanitized_data = binary_data#sanitize_rmd(data)
+    
+    # incoming_data = FileStorage(stream)
     
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
     # The temp files are deleted as soon as the below with block ends.
     with NamedTemporaryFile(suffix=".Rmd") as in_file:
-        incoming_data.save(dst=in_file.name)
+        in_file.write(sanitized_data) 
+        
+        in_file.seek(0)
+        print('temp file contents', in_file.read())
 
         # Call R rmarkdown package from python.
         # See https://cran.r-project.org/web/packages/rmarkdown/index.html
@@ -48,6 +55,28 @@ def perform_rmd_conversion(stream):
             out_file.close()
             os.remove(out_path)
         return read_outfile
+    
+# We need to sanitize any code blocks (ex ```{bash}) from the rmd before rendering it
+# This is because kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output.), which powers our rendering
+# Actually executes any code in a labeled codeblock. By processing out any of these labels, we ensure we display a preview without a possible arbitrary code execution vulnerability
+# See this document, issue number one, for more details on the vulnerability: https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem 
+# Takes a string and returns binary
+def sanitize_rmd(data):
+    print('printing data to sanitize pre-split', data)
+    lines = data.split('\n')
+    print('printing lines of file', lines)
+    sanitized_file = []
+    for line in lines:
+        if line.startswith('```'):
+            sanitized_line = '```'
+        else: 
+            sanitized_line = line
+        sanitized_file.append(sanitized_line)    
+        
+    file = '\n'.join(sanitized_file)
+    print('putting data put back together', file)
+    
+    return file.encode('ascii')
 
 
 # Authorization decorator
