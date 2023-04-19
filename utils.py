@@ -52,12 +52,13 @@ def perform_rmd_conversion(stream):
             os.remove(out_path)
         return read_outfile
     
-# We need to sanitize any code blocks (ex ```{bash}) from the rmd before rendering it
-# This is because kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output.), which powers our rendering
-# Actually executes any code in a labeled codeblock. By processing out any of these labels, we ensure we display a preview without a possible arbitrary code execution vulnerability
-# See this document, issue number one, for more details on the vulnerability: https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem 
-# Takes a string and returns binary
 def __sanitize_rmd(data: str) -> bytes:
+    """
+    We need to sanitize any code blocks (ex ```{bash}) from the rmd before rendering it
+    This is because kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output.), which powers our rendering
+    Actually executes any code in a labeled codeblock. By processing out any of these labels, we ensure we display a preview without a possible arbitrary code execution vulnerability
+    See this document, issue number one, for more details on the vulnerability: https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem 
+    """
     logging.info(f'printing data to sanitize pre-split: {data}')
     lines = data.split('\n')
     logging.info(f'printing lines of file: {lines}')
