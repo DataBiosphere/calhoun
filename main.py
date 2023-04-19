@@ -76,3 +76,5 @@ def convert_rmd():
 
 if __name__ == '__main__':
     app.run(port=8080, host='0.0.0.0')
+    # Uncomment below line for local running
+    # app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
