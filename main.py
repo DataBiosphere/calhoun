@@ -61,12 +61,13 @@ def convert():
 
 @app.route('/api/convert/rmd', methods={'POST'})
 @cross_origin()
-# @authorized(app.config['SAM_ROOT'])
+@authorized(app.config['SAM_ROOT'])
 def convert_rmd():
     stream = request.stream
     return perform_rmd_conversion(stream)
 
 
 if __name__ == '__main__':
-    # app.run(port=8080, host='0.0.0.0')
-    app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
+    app.run(port=8080, host='0.0.0.0')
+    # Uncomment below line for local running
+    # app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))

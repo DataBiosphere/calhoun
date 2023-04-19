@@ -28,19 +28,15 @@ def perform_notebook_conversion(notebook_json):
 
 def perform_rmd_conversion(stream):
     binary_data = stream.read()
-    # data = binary_data.decode('ascii')
-    sanitized_data = binary_data#sanitize_rmd(data)
-    
-    # incoming_data = FileStorage(stream)
+    data = binary_data.decode('ascii')
+    sanitized_data = sanitize_rmd(data)
     
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
     # The temp files are deleted as soon as the below with block ends.
     with NamedTemporaryFile(suffix=".Rmd") as in_file:
         in_file.write(sanitized_data) 
-        
         in_file.seek(0)
-        print('temp file contents', in_file.read())
 
         # Call R rmarkdown package from python.
         # See https://cran.r-project.org/web/packages/rmarkdown/index.html
