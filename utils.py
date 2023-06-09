@@ -1,3 +1,4 @@
+import re
 from flask import request
 from requests import get
 from requests.exceptions import ConnectionError
@@ -141,28 +142,32 @@ def __process_sam_response(sam_response):
 def read_json_file(file_name):
     with open(file_name) as json_file:
         data = json.load(json_file)
-        return data
-    
-def remove_inline_scripts(html_doc):
-    soup = BeautifulSoup(html_doc, 'html.parser')
+        return data   
 
-    # remove math jax script from dom
-    # this would be done together with the for loop below, but semantically it makes sense to separate them
-    # all previews will have this first script, as it is part of the nbconvert lib we use
-    # on the other hand, any other scripts to remove are a result of python libs in a specific notebook relying on javascript to render output 
-    mathJaxUnsafeScript = soup.select_one('script[type="text/x-mathjax-config"]')
-    
-    if mathJaxUnsafeScript is not None:
-        mathJaxUnsafeScript.decompose()
-    
-    allJavascriptTags = soup.findAll('script')
-    allUntrustedJavascriptTags = list(filter(lambda scriptTag: not ('src' in scriptTag.attrs and 'https://cdnjs.cloudflare.com' in scriptTag['src']), allJavascriptTags))
-    
-    # Remove all script tags that dont have a src containing https://cdnjs.cloudflare.com, which is trusted via the terra-ui CSP
-    # See this PR for implementation in UI https://github.com/DataBiosphere/terra-ui/pull/2438/files#diff-d506904027666817584075d2f1141152f8d72d02f355f39f3585453278ecdedbR24
-    if len(allUntrustedJavascriptTags) > 0:
-        logging.info(f"Detected preview has Javascript from an untrusted source. Removing {len(allUntrustedJavascriptTags)} count(s) as required by csp")
-        for untrustedScriptTag in allUntrustedJavascriptTags:
-            untrustedScriptTag.decompose()
-             
+def remove_inline_scripts(html_doc):
+    if not html_doc:
+        return None
+
+    allowlist = [
+        "div", "span", "p", "br", "pre",
+        "table", "tbody", "thead", "tr", "td", "a",
+        "blockquote",
+        "ul", "li", "ol",
+        "b", "em", "i", "strong", "u", "font"
+    ]
+
+    prop_allowlist = ["href", "style", "color", "size", "bgcolor", "border", "class"]
+
+    soup = BeautifulSoup(html_doc, 'html.parser')
+    tag_list = soup.find("body").findAll(lambda tag: len(tag.attrs) > 0)
+    for t in list(tag_list):
+        for attr in list(t.attrs):
+            if attr not in prop_allowlist:#strip non-allowlisted attributes
+                del t[attr]
+            if attr == "style":
+                t[attr] = re.sub("(bookmark-label|fetch|url|background|background-image|@import):[^;]+;", "", t[attr])
+
+    for tag in list(soup.find("body").findAll()):
+        if tag.name not in allowlist: # remove tag if not in allowlist
+            tag.decompose()
     return str(soup)
