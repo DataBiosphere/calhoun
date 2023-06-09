@@ -156,20 +156,20 @@ def remove_inline_scripts(html_doc):
         "b", "em", "i", "strong", "u", "font"
     ]
 
-    prop_allowlist = ["href", "style", "color", "size", "bgcolor", "border"]
+    prop_allowlist = ["href", "style", "color", "size", "bgcolor", "border", "class"]
 
     soup = BeautifulSoup(html_doc, 'html.parser')
-
-    tag_list = soup.findAll(lambda tag: len(tag.attrs) > 0)
-    for t in tag_list:
-        for attr in t.attrs:
+    print(soup)
+    tag_list = soup.find("body").findAll(lambda tag: len(tag.attrs) > 0)
+    for t in list(tag_list):
+        for attr in list(t.attrs):
             if attr not in prop_allowlist:#strip non-allowlisted attributes
                 del t[attr]
             if attr == "style":
                 t[attr] = re.sub("(bookmark-label|fetch|url|background|background-image|@import):[^;]+;", "", t[attr])
 
-    for tag in soup.findAll():
+    for tag in list(soup.find("body").findAll()):
         if tag.name not in allowlist: # remove tag if not in allowlist
             tag.decompose()
-
+    print(soup)
     return str(soup)

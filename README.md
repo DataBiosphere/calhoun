@@ -60,11 +60,8 @@ Ensure hosts file has the following record:
 127.0.0.1       local.dsde-dev.broadinstitute.org
 ```
 
-Update main.py to use Broad's wildcard SSL certificates.
-These certificates are the same ones used for any of our web applications.
-To get these certificates, run the `configure.rb` script by following the instructions under the title [Running Leo Locally](https://broadworkbench.atlassian.net/wiki/spaces/IA/pages/104399223/Callisto+Developer+Handbook#CallistoDeveloperHandbook-RunningLeoLocally)
-
-Once complete, copy `leonardo/config/server.*` to `/etc/ssl/certs`.
+Once complete, copy `vault read secret/dsde/firecloud/dev/common/server.crt` and 
+`vault read secret/dsde/firecloud/dev/common/server.key` to `/etc/ssl/certs`.
 
 Configure flask to look for the SSL Certificates
 
