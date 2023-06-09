@@ -13,7 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN R -e 'install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))'
+RUN R -e 'install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce", "BiocManager"))'
+RUN R -e 'BiocManager::install(c("AnVIL", "AnvilDataModels", "DataBiosphere/Ronaldo", "shiny", "bigrquery", "googleCloudStorageR", "remotes"))'
+RUN R -e 'remotes::install_github("UW-GAC/AnvilDataModels")'
+RUN R -e 'remotes::install_github("Bioconductor/AnVIL", dependencies=FALSE)'
 
 COPY . /work
 WORKDIR /work
