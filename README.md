@@ -63,22 +63,9 @@ Ensure hosts file has the following record:
 Once complete, copy `vault read secret/dsde/firecloud/dev/common/server.crt` and 
 `vault read secret/dsde/firecloud/dev/common/server.key` to `/etc/ssl/certs`.
 
-Configure flask to look for the SSL Certificates
-
-```py
-# main.py
-if __name__ == '__main__':
-    app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
-```
-
-Edit config.py to use development authentication.
-``` py
-SAM_ROOT = 'https://sam.dsde-dev.broadinstitute.org'
-```
-
 Run a local server
 ```sh
-python3 main.py
+DEVELOPMENT='true' SAM_ROOT='https://sam.dsde-dev.broadinstitute.org' python3 main.py
 ```
 
 Or, run a local containerized server which is useful for testing R functionality
