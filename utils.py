@@ -159,7 +159,6 @@ def remove_inline_scripts(html_doc):
     prop_allowlist = ["href", "style", "color", "size", "bgcolor", "border", "class"]
 
     soup = BeautifulSoup(html_doc, 'html.parser')
-    print(soup)
     tag_list = soup.find("body").findAll(lambda tag: len(tag.attrs) > 0)
     for t in list(tag_list):
         for attr in list(t.attrs):
@@ -171,5 +170,4 @@ def remove_inline_scripts(html_doc):
     for tag in list(soup.find("body").findAll()):
         if tag.name not in allowlist: # remove tag if not in allowlist
             tag.decompose()
-    print(soup)
     return str(soup)

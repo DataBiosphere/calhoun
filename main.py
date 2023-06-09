@@ -1,3 +1,4 @@
+from os import environ
 from flask import Flask, make_response, render_template, request
 from flask_cors import cross_origin
 from flask_talisman import Talisman
@@ -75,6 +76,7 @@ def convert_rmd():
       return render_template('rstudio-error.html', error=errMessage) , f'400 {errMessage}'
 
 if __name__ == '__main__':
-    # app.run(port=8080, host='0.0.0.0')
-    # Uncomment below line for local running
-    app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
+    if(environ.get('DEVELOPMENT') == 'true'):
+       app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
+    else:
+      app.run(port=8080, host='0.0.0.0')
