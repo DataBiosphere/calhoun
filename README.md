@@ -32,9 +32,10 @@ Install dependencies
 ```sh
 python3 -m venv env
 source env/bin/activate
-pip install -r requirements-min.txt
 export FLASK_DEBUG=1
 ```
+
+Note: use `source deactivate` to deactivate the virtual env
 
 ### R dependencies
 
@@ -45,6 +46,7 @@ brew install pandoc
 
 ```sh
 brew install R
+pip install -r requirements.txt # requirements have to be downloaded after R for some packages
 R
 > install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))
 ```
@@ -52,7 +54,7 @@ R
 
 Write a config file
 ```sh
-cp config.dev.py config.py
+cp config.py config.dev.py 
 ```
 
 Ensure hosts file has the following record:
@@ -101,6 +103,14 @@ Install [Poetry](https://python-poetry.org/docs/)
 
 ```sh
 brew install poetry
+```
+
+If you need to change any dependency versions:
+- update the pyproject.toml file
+- run the following to update the lock file
+  
+```sh
+poetry lock
 ```
 
 Install dependencies
