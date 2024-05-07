@@ -1,11 +1,16 @@
 FROM us.gcr.io/broad-dsp-gcr-public/base/python:debian
 
-ENV R_BASE_VERSION 4.2.2.20221110-2
+ENV R_BASE_VERSION 4.4.0 
+
+## Use Debian unstable - neccessary to install 4.4.0 since it was just released 4/24/24
+RUN echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list \
+        && echo 'APT::Default-Release "testing";' > /etc/apt/apt.conf.d/default \
+        && echo 'APT::Install-Recommends "false";' > /etc/apt/apt.conf.d/90local-no-recommends
 
 # Install R
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  r-base=${R_BASE_VERSION} \
-  r-base-dev=${R_BASE_VERSION} \
+RUN apt-get update && apt-get install -y -t unstable --no-install-recommends \
+  r-base=${R_BASE_VERSION}-* \
+  r-base-dev=${R_BASE_VERSION}-* \
   pandoc \
   && apt update \
   && apt install -yq --no-install-recommends \
