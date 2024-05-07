@@ -1,9 +1,11 @@
 FROM us.gcr.io/broad-dsp-gcr-public/base/python:debian
 
+ENV R_BASE_VERSION 4.2.2.20221110-2
+
 # Install R
 RUN apt-get update && apt-get install -y --no-install-recommends \
-  r-base \
-  r-base-dev \
+  r-base=${R_BASE_VERSION} \
+  r-base-dev=${R_BASE_VERSION} \
   pandoc \
   && apt update \
   && apt install -yq --no-install-recommends \
@@ -19,7 +21,7 @@ COPY . /work
 WORKDIR /work
 
 # Set up python env
-RUN pip install "poetry==1.4.0"
+RUN pip install "poetry==1.8.2"
 RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 

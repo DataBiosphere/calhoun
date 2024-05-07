@@ -35,7 +35,7 @@ source env/bin/activate
 export FLASK_DEBUG=1
 ```
 
-Note: use `source deactivate` to deactivate the virtual env
+Note: use `source deactivate` if you want to deactivate the virtual env
 
 ### R dependencies
 
