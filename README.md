@@ -43,24 +43,20 @@ curl -sSL https://install.python-poetry.org | python3 -
 If you need to change any dependency versions:
 - update the pyproject.toml file
 - run the following to update the lock file
-  
+    
 ```sh
 poetry lock
 ```
 
-Install dependencies
+
+To install dependencies
 ```sh
 poetry install
 ```
 
-Update dependencies
+To update dependencies
 ```sh
 poetry update
-```
-
-Export to requirements.txt. Google App Engine uses this for deployment.
-```
-poetry export -f requirements.txt --output requirements.txt --without-hashes
 ```
 
 
