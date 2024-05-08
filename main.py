@@ -77,6 +77,6 @@ def convert_rmd():
 
 if __name__ == '__main__':
     if(environ.get('DEVELOPMENT') == 'true'):
-       app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/certs/server.key'))
+       app.run(port=8080, host='0.0.0.0', ssl_context=('/etc/ssl/certs/server.crt', '/etc/ssl/private/server.key'))
     else:
       app.run(port=8080, host='0.0.0.0')

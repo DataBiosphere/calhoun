@@ -26,71 +26,6 @@ A swagger-ui page is available at /swagger-ui/ on any running instance. For exis
 ### Framework
 This project uses the [Flask](https://flask.palletsprojects.com/en/1.1.x/) Python web framework.
 
-## Developing
-Install dependencies
-
-```sh
-python3 -m venv env
-source env/bin/activate
-export FLASK_DEBUG=1
-```
-
-Note: use `source deactivate` if you want to deactivate the virtual env
-
-### R dependencies
-
-Install [Pandoc](https://pandoc.org/installing.html)
-```sh
-brew install pandoc
-```
-
-```sh
-brew install R
-pip install -r requirements.txt # requirements have to be downloaded after R for some packages
-R
-> install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))
-```
-
-
-Write a config file
-```sh
-cp config.py config.dev.py 
-```
-
-Ensure hosts file has the following record:
-```
-127.0.0.1       local.dsde-dev.broadinstitute.org
-```
-
-Once complete, copy `vault read secret/dsde/firecloud/dev/common/server.crt` and 
-`vault read secret/dsde/firecloud/dev/common/server.key` to `/etc/ssl/certs`.
-
-Run a local server
-```sh
-DEVELOPMENT='true' SAM_ROOT='https://sam.dsde-dev.broadinstitute.org' python3 main.py
-```
-
-Or, run a local containerized server which is useful for testing R functionality
-```sh
-docker image build . -t calhoun-test:0
-docker kill t1
-docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
-```
-
-Access the application locally:
-* https://local.dsde-dev.broadinstitute.org:8080/status
-* https://local.dsde-dev.broadinstitute.org:8080/api/docs/
-
-Run unit tests locally
-```sh
-./scripts/unit-test.sh
-```
-
-Run automation tests locally
-```sh
-gcloud auth login <any-terra-dev-user>
-RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
-```
 
 ## Managing dependencies
 
@@ -102,7 +37,7 @@ We use [Poetry](https://python-poetry.org/docs/) to manage our dependencies. Fro
 Install [Poetry](https://python-poetry.org/docs/)
 
 ```sh
-brew install poetry
+curl -sSL https://install.python-poetry.org | python3 -
 ```
 
 If you need to change any dependency versions:
@@ -127,6 +62,86 @@ Export to requirements.txt. Google App Engine uses this for deployment.
 ```
 poetry export -f requirements.txt --output requirements.txt --without-hashes
 ```
+
+
+## Run locally
+
+Either run a local containerized server:
+
+```sh
+docker image build . -t calhoun-test:0
+docker kill t1
+docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
+```
+
+### or 
+
+run a local app with [Flask](https://flask.palletsprojects.com/en/1.1.x/):
+
+```sh
+python3 -m venv env
+source env/bin/activate
+pip install Flask
+export FLASK_DEBUG=1
+```
+
+### Install dependencies
+
+Install [Pandoc](https://pandoc.org/installing.html) and R
+```sh
+brew install pandoc
+brew install R
+```
+
+Install R packages
+```sh
+R
+> install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))
+```
+
+Install [Poetry](https://python-poetry.org/docs/) and project dependencies
+```sh
+curl -sSL https://install.python-poetry.org
+poetry install
+```
+
+Write a dev config file
+```sh
+cp config.py config.dev.py 
+```
+
+Ensure etc/hosts file has the following record:
+```
+127.0.0.1       local.dsde-dev.broadinstitute.org
+```
+
+Once complete, copy `vault read secret/dsde/firecloud/dev/common/server.crt` to `/etc/ssl/certs` and 
+`vault read secret/dsde/firecloud/dev/common/server.key` to `/etc/ssl/private`.
+
+Run a local server
+```sh
+DEVELOPMENT='true' SAM_ROOT='https://sam.dsde-dev.broadinstitute.org' python3 main.py
+```
+
+
+
+
+Access the application locally:
+* https://local.dsde-dev.broadinstitute.org:8080/status
+* https://local.dsde-dev.broadinstitute.org:8080/api/docs/
+
+Run unit tests locally
+```sh
+./scripts/unit-test.sh
+```
+
+Run automation tests locally
+```sh
+gcloud auth login <any-terra-dev-user>
+RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
+```
+
+
 
 ### Deployment
 
