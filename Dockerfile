@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y -t unstable --no-install-recommends \
   r-base=${R_BASE_VERSION}-* \
   r-base-dev=${R_BASE_VERSION}-*
 
-#RUN R -e 'install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))'
+RUN R -e 'install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))'
 
 COPY . /work
 WORKDIR /work
