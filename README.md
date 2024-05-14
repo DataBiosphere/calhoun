@@ -81,7 +81,7 @@ pip install Flask
 export FLASK_DEBUG=1
 ```
 
-### Install dependencies
+#### Install dependencies
 
 Install [Pandoc](https://pandoc.org/installing.html) and R
 ```sh
@@ -119,12 +119,16 @@ Run a local server
 DEVELOPMENT='true' SAM_ROOT='https://sam.dsde-dev.broadinstitute.org' python3 main.py
 ```
 
-
-
-
 Access the application locally:
 * https://local.dsde-dev.broadinstitute.org:8080/status
 * https://local.dsde-dev.broadinstitute.org:8080/api/docs/
+
+
+To manually test calhoun locally
+- point the calhoun URL in the [dev config](https://github.com/DataBiosphere/terra-ui/blob/IA-4933-run-analysis/config/dev.json#L5) to your local url https://local.dsde-dev.broadinstitute.org
+- run a local terra-ui
+- Look at previews!
+
 
 Run unit tests locally
 ```sh
@@ -138,7 +142,8 @@ RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
 ```
 
 
-
 ### Deployment
 
-TODO add section about k8s deployment
+Upon merging a change to dev:
+- The build github workflow builds the new image
+- Then it automatically updates the calhoun version in terra-helmfile
