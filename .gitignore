@@ -9,3 +9,5 @@ env/
 env*/
 gha-creds-*.json
 .env
+.idea
+config.dev.py
