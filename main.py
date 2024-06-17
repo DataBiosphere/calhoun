@@ -3,7 +3,8 @@ from flask import Flask, make_response, render_template, request
 from flask_cors import cross_origin
 from flask_talisman import Talisman
 from flask_swagger_ui import get_swaggerui_blueprint
-from utils import perform_notebook_conversion, perform_rmd_conversion
+import convert_rmd
+import convert_ipynb
 from authorize import authorized
 
 
@@ -53,13 +54,14 @@ def status():
     response.mimetype = 'text/plain'
     return response
 
+
 @app.route('/api/convert', methods={'POST'})
 @cross_origin()
 @authorized(app.config['SAM_ROOT'])
 def convert():
     json = request.get_json(force=True)
     try:
-      return perform_notebook_conversion(json)
+      return convert_ipynb.convert(json)
     except Exception as e:
       errMessage = f'{e.__class__.__name__} : {"".join(str(e).splitlines())} .'
       return render_template('jupyter-error.html', error=errMessage), f'400 {errMessage}'
@@ -71,10 +73,11 @@ def convert():
 def convert_rmd():
     stream = request.stream
     try:
-      return perform_rmd_conversion(stream)
+      return convert_rmd.convert(stream)
     except Exception as e:
       errMessage = f'{e.__class__.__name__} : {"".join(str(e).splitlines())} .'
       return render_template('rstudio-error.html', error=errMessage) , f'400 {errMessage}'
+
 
 if __name__ == '__main__':
     if(environ.get('DEVELOPMENT') == 'true'):

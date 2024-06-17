@@ -53,6 +53,6 @@ TEST: a safe PNG image using the Rmd image syntax
      <script type=\"text/javascript\">document.getElementById(\"output_element\").innerHTML = \"\"+(1+1)</script>
    </div>
    <div>TEST: `img` tag stripped of its on* attributes
-     <img src=https://www.pixelstalk.net/wp-content/uploads/2016/08/Lovely-dog-wallpaper-download-cute-puppy.jpg onload\"alert(String.fromCharCode(88,83,83))\"></img>
+     <img src=https://www.pixelstalk.net/wp-content/uploads/2016/08/Lovely-dog-wallpaper-download-cute-puppy.jpg onload=\"alert(String.fromCharCode(88,83,83))\"></img>
    </div>
  </div>
