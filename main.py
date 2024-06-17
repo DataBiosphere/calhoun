@@ -3,7 +3,8 @@ from flask import Flask, make_response, render_template, request
 from flask_cors import cross_origin
 from flask_talisman import Talisman
 from flask_swagger_ui import get_swaggerui_blueprint
-from utils import perform_notebook_conversion, perform_rmd_conversion, authorized
+from utils import perform_notebook_conversion, perform_rmd_conversion
+from authorize import authorized
 
 
 # Webservice routing
@@ -16,7 +17,7 @@ SWAGGER_URL = '/swagger-ui'
 API_URL = '/static/api-docs.yaml'
 
 swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL, 
+    SWAGGER_URL,
     API_URL,
     config={
         'app_name': "Calhoun"
