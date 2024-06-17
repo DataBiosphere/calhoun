@@ -26,13 +26,11 @@ A swagger-ui page is available at /swagger-ui/ on any running instance. For exis
 ### Framework
 This project uses the [Flask](https://flask.palletsprojects.com/en/1.1.x/) Python web framework.
 
-
 ## Managing dependencies
 
-We use [Poetry](https://python-poetry.org/docs/) to manage our dependencies. From their website: 
+We use [Poetry](https://python-poetry.org/docs/) to manage our dependencies. From their website:
 
 > Poetry is a tool for dependency management and packaging in Python. It allows you to declare the libraries your project depends on and it will manage (install/update) them for you. Poetry offers a lockfile to ensure repeatable installs, and can build your project for distribution.
-
 
 Install [Poetry](https://python-poetry.org/docs/)
 
@@ -43,11 +41,10 @@ curl -sSL https://install.python-poetry.org | python3 -
 If you need to change any dependency versions:
 - update the pyproject.toml file
 - run the following to update the lock file
-    
+
 ```sh
 poetry lock
 ```
-
 
 To install dependencies
 ```sh
@@ -59,77 +56,28 @@ To update dependencies
 poetry update
 ```
 
-
 ## Run locally
 
-Either run a local containerized server:
+Run a local containerized server:
 
 ```sh
 docker image build . -t calhoun-test:0
 docker kill t1
 docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 ```
-
-### or 
-
-run a local app with [Flask](https://flask.palletsprojects.com/en/1.1.x/):
-
-```sh
-python3 -m venv env
-source env/bin/activate
-pip install Flask
-export FLASK_DEBUG=1
-```
-
-#### Install dependencies
-
-Install [Pandoc](https://pandoc.org/installing.html) and R
-```sh
-brew install pandoc
-brew install R
-```
-
-Install R packages
-```sh
-R
-> install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))
-```
-
-Install [Poetry](https://python-poetry.org/docs/) and project dependencies
-```sh
-curl -sSL https://install.python-poetry.org
-poetry install
-```
-
-Write a dev config file
-```sh
-cp config.py config.dev.py 
-```
-
-Ensure etc/hosts file has the following record:
-```
-127.0.0.1       local.dsde-dev.broadinstitute.org
-```
-
-Once complete, copy `vault read secret/dsde/firecloud/dev/common/server.crt` to `/etc/ssl/certs` and 
-`vault read secret/dsde/firecloud/dev/common/server.key` to `/etc/ssl/private`.
-
-Run a local server
-```sh
-DEVELOPMENT='true' SAM_ROOT='https://sam.dsde-dev.broadinstitute.org' python3 main.py
-```
+This will start a Calhoun server at localhost:8080.
 
 Access the application locally:
-* https://local.dsde-dev.broadinstitute.org:8080/status
-* https://local.dsde-dev.broadinstitute.org:8080/api/docs/
+* http://localhost:8080/status
+* http://localhost:8080/swagger-ui
 
 
-To manually test calhoun locally
-- point the calhoun URL in the [dev config](https://github.com/DataBiosphere/terra-ui/blob/IA-4933-run-analysis/config/dev.json#L5) to your local url https://local.dsde-dev.broadinstitute.org
+## Run locally with terra-ui
+- point the calhoun URL in the terra-ui [dev config](https://github.com/DataBiosphere/terra-ui/blob/dev/config/dev.json) to your local url http://localhost:8080
 - run a local terra-ui
 - Look at previews!
 
-
+## Automated testing
 Run unit tests locally
 ```sh
 ./scripts/unit-test.sh
@@ -141,6 +89,7 @@ gcloud auth login <any-terra-dev-user>
 RUN_AUTHENTICATED_TEST=1 ./scripts/automation-test.sh
 ```
 
+If you add a new test case, make sure it is imported and added to `test_cases` in `unit_test.py`.
 
 ### Deployment
 

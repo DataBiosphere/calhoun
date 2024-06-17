@@ -12,6 +12,7 @@ from rpy2.robjects.packages import importr
 import json
 import os
 import logging
+import nh3
 from bs4 import BeautifulSoup
 
 def perform_notebook_conversion(notebook_json):
@@ -21,9 +22,9 @@ def perform_notebook_conversion(notebook_json):
     # set up a default nbconvert HTML exporter and run the conversion
     html_exporter = HTMLExporter()
     (nb_html, resources_dict) = html_exporter.from_notebook_node(nb)
-    
+
     safe_html = remove_inline_scripts(nb_html)
-    
+
     return safe_html
 
 
@@ -31,12 +32,12 @@ def perform_rmd_conversion(stream):
     binary_data = stream.read()
     data = binary_data.decode('ascii')
     sanitized_data = __sanitize_rmd(data)
-    
+
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
     # The temp files are deleted as soon as the below with block ends.
     with NamedTemporaryFile(suffix=".Rmd") as in_file:
-        in_file.write(sanitized_data) 
+        in_file.write(sanitized_data)
         in_file.seek(0)
 
         # Call R rmarkdown package from python.
@@ -44,7 +45,7 @@ def perform_rmd_conversion(stream):
         rmd = importr("rmarkdown")
         rendered_html = rmd.render(in_file.name)
         out_path = rendered_html[0]
-        
+
         try:
             out_file = open(out_path)
             read_outfile = out_file.read()
@@ -52,13 +53,13 @@ def perform_rmd_conversion(stream):
             out_file.close()
             os.remove(out_path)
         return read_outfile
-    
+
 def __sanitize_rmd(data: str) -> bytes:
     """
     We need to sanitize any code blocks (ex ```{bash}) from the rmd before rendering it
     This is because kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output.), which powers our rendering
     Actually executes any code in a labeled codeblock. By processing out any of these labels, we ensure we display a preview without a possible arbitrary code execution vulnerability
-    See this document, issue number one, for more details on the vulnerability: https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem 
+    See this document, issue number one, for more details on the vulnerability: https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem
     """
     logging.info(f'printing data to sanitize pre-split: {data}')
     lines = data.split('\n')
@@ -67,13 +68,13 @@ def __sanitize_rmd(data: str) -> bytes:
     for line in lines:
         if line.startswith('```'):
             sanitized_line = '```'
-        else: 
+        else:
             sanitized_line = line
-        sanitized_file.append(sanitized_line)    
-        
+        sanitized_file.append(sanitized_line)
+
     file = '\n'.join(sanitized_file)
     logging.info(f'putting data put back together {file}')
-    
+
     return file.encode('ascii')
 
 
@@ -142,7 +143,7 @@ def __process_sam_response(sam_response):
 def read_json_file(file_name):
     with open(file_name) as json_file:
         data = json.load(json_file)
-        return data   
+        return data
 
 def remove_inline_scripts(html_doc):
     if not html_doc:
