@@ -13,7 +13,8 @@ def get_suite():
     for test_case in test_cases:
         case_suite = unittest.defaultTestLoader.loadTestsFromTestCase(test_case)
         suites.append(case_suite)
-    suite = unittest.TestSuite().addTests(suites)
+    suite = unittest.TestSuite()
+    suite.addTests(suites)
     num_tests = suite.countTestCases()
 
     print("Found {count} tests in suite.".format(count=num_tests))
