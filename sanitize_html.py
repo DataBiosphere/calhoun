@@ -7,7 +7,7 @@ unsafe_tags = set(["script", "style"])
 
 safe_attributes = ALLOWED_ATTRIBUTES
 
-safe_schemes = set(["http", "https"])
+safe_schemes = set(["http", "https", "data"])
 
 
 def sanitize(html: str):

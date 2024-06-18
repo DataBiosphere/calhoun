@@ -45,6 +45,7 @@ app.view_functions["swagger_ui.show"].talisman_view_options = {
 
 @app.route('/_ah/warmup')
 def warmup():
+    # see https://cloud.google.com/appengine/docs/standard/configuring-warmup-requests?tab=python
     return '', 200, {}
 
 
