@@ -1,6 +1,6 @@
 FROM us.gcr.io/broad-dsp-gcr-public/base/python:debian
 
-ENV R_BASE_VERSION 4.4.0 
+ENV R_BASE_VERSION 4.4.0
 
 # Install required packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -12,7 +12,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libgeos-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-
 
 ## Switch to use Debian unstable - neccessary to install 4.4.0 since it was just released 4/24/24
 RUN echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list \
