@@ -1,7 +1,5 @@
 FROM us.gcr.io/broad-dsp-gcr-public/base/python:debian
 
-ENV R_BASE_VERSION 4.4.0
-
 # Install required packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
   curl \
@@ -13,15 +11,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-## Switch to use Debian unstable - neccessary to install 4.4.0 since it was just released 4/24/24
-RUN echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list \
-        && echo 'APT::Default-Release "testing";' > /etc/apt/apt.conf.d/default \
-        && echo 'APT::Install-Recommends "false";' > /etc/apt/apt.conf.d/90local-no-recommends
-
 # Install R
-RUN apt-get update && apt-get install -y -t unstable --no-install-recommends \
-  r-base=${R_BASE_VERSION}-* \
-  r-base-dev=${R_BASE_VERSION}-*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  r-base \
+  r-base-dev
 
 RUN R -e 'install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))'
 
