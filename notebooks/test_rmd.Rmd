@@ -46,7 +46,7 @@ TEST: a safe PNG image using the Rmd image syntax
      <a href=\"javascript:alert('XSS 1');\">
    </div>
    <div>TEST: `img` tag with javascript injected
-     <img src=\"javascript:alert('XSS 2');\">
+     <img src=\"javascript:alert('XSS 2');\" onload=\"alert('XSS 3')\">
    </div>
    <div>TEST: code in a `script` tag calculates 1+1=
      <p id=\"output_element\">(code not executed)</p>

@@ -29,9 +29,9 @@ class TestConvert(unittest.TestCase):
         self.assertIn("<div>", rmd_html)
         self.assertIn("This is an R Markdown document", rmd_html)
         self.assertIn("src=\"data:image/png", rmd_html)
-        self.assertIn("<div>TEST: `img` tag stripped of its on* attributes    <img src=\"https://www.pixelstalk.net/wp-content/uploads/2016/08/Lovely-dog-wallpaper-download-cute-puppy.jpg\"/>", rmd_html)
+        self.assertIn("TEST: <code>img</code> tag with javascript injected &lt;img src=\"<a class=\"uri\" rel=\"noopener noreferrer\">javascript:alert</a>(‘XSS 2’);\"", rmd_html)
         self.assertNotIn("href=\"javascript", rmd_html)
-        self.assertNotIn("<script", rmd_html)
+        self.assertIn("<code> &lt;script", rmd_html)
         self.assertNotIn("<style scoped>", rmd_html)
         self.assertNotIn("```{", rmd_html)
 
