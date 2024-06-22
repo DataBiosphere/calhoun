@@ -1,7 +1,7 @@
 from flask import request
+from functools import wraps
 from requests import get
 from requests.exceptions import ConnectionError
-from functools import wraps
 import werkzeug.exceptions as e
 
 

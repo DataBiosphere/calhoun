@@ -1,5 +1,7 @@
 import unittest
+
 from sanitize_html import sanitize
+
 
 class TestHtmlSanitize(unittest.TestCase):
 

@@ -1,9 +1,10 @@
+from bs4 import BeautifulSoup
+from rpy2.robjects.packages import importr
+from tempfile import NamedTemporaryFile
 import logging
 import os
+
 from sanitize_html import sanitize
-from tempfile import NamedTemporaryFile
-from rpy2.robjects.packages import importr
-from bs4 import BeautifulSoup
 
 
 def to_safe_html(stream):

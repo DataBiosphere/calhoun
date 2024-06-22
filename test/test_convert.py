@@ -1,7 +1,8 @@
+import json
 import unittest
+
 import convert_ipynb_file
 import convert_rmd_file
-import json
 
 
 class TestConvert(unittest.TestCase):

@@ -1,11 +1,12 @@
-from os import environ
 from flask import Flask, make_response, render_template, request
 from flask_cors import cross_origin
-from flask_talisman import Talisman
 from flask_swagger_ui import get_swaggerui_blueprint
-import convert_rmd_file
-import convert_ipynb_file
+from flask_talisman import Talisman
+from os import environ
+
 from authorize import authorized
+import convert_ipynb_file
+import convert_rmd_file
 
 
 # Webservice routing

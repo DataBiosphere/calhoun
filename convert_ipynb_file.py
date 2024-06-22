@@ -1,7 +1,8 @@
+from bs4 import BeautifulSoup
 from nbconvert import HTMLExporter
 from nbformat.v4 import to_notebook
+
 from sanitize_html import sanitize
-from bs4 import BeautifulSoup
 
 
 def to_safe_html(notebook_json):

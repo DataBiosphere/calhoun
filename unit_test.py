@@ -1,4 +1,5 @@
 import unittest
+
 from test.test_convert import TestConvert
 from test.test_html_sanitize import TestHtmlSanitize
 

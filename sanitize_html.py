@@ -1,5 +1,5 @@
-from nh3 import ALLOWED_TAGS, ALLOWED_ATTRIBUTES, clean
 from copy import deepcopy
+from nh3 import ALLOWED_TAGS, ALLOWED_ATTRIBUTES, clean
 
 
 safe_attributes = set(["class"])
