@@ -14,7 +14,7 @@ def to_safe_html(stream):
     safe_rmd = _sanitize_rmd(raw_rmd)
     raw_html = _to_html(safe_rmd)
 
-    soup = BeautifulSoup(raw_html, 'html.parser')
+    soup = BeautifulSoup(str(raw_html), 'html.parser')
     body_tag = soup.body
 
     # temporarily swap body tag for a safe tagname
