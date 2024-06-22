@@ -3,8 +3,8 @@ from flask import Flask, make_response, render_template, request
 from flask_cors import cross_origin
 from flask_talisman import Talisman
 from flask_swagger_ui import get_swaggerui_blueprint
-import convert_rmd as rmd_converter
-import convert_ipynb as ipynb_converter
+import convert_rmd_file
+import convert_ipynb_file
 from authorize import authorized
 
 
@@ -62,7 +62,7 @@ def status():
 def convert():
     json = request.get_json(force=True)
     try:
-      return ipynb_converter.convert(json)
+      return convert_ipynb_file.to_safe_html(json)
     except Exception as e:
       errMessage = f'{e.__class__.__name__} : {"".join(str(e).splitlines())} .'
       return render_template('jupyter-error.html', error=errMessage), f'400 {errMessage}'
@@ -74,7 +74,7 @@ def convert():
 def convert_rmd():
     stream = request.stream
     try:
-      return rmd_converter.convert(stream)
+      return convert_rmd_file.to_safe_html(stream)
     except Exception as e:
       errMessage = f'{e.__class__.__name__} : {"".join(str(e).splitlines())} .'
       return render_template('rstudio-error.html', error=errMessage) , f'400 {errMessage}'

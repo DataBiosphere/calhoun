@@ -1,5 +1,5 @@
 ---
-title: "test-rmd"
+title: "test_rmd"
 output: html_document
 ---
 

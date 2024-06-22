@@ -6,7 +6,7 @@ from rpy2.robjects.packages import importr
 from bs4 import BeautifulSoup
 
 
-def convert(stream):
+def to_safe_html(stream):
     binary_data = stream.read()
     raw_rmd = binary_data.decode('ascii')
 
@@ -30,7 +30,6 @@ def convert(stream):
 
     safe_html = str(soup)
     return safe_html
-
 
 
 def _sanitize_rmd(data: str) -> bytes:

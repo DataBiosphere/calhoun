@@ -4,7 +4,7 @@ from sanitize_html import sanitize
 from bs4 import BeautifulSoup
 
 
-def convert(notebook_json):
+def to_safe_html(notebook_json):
     # get a NotebookNode object that nbconvert can use
     notebook = to_notebook(notebook_json)
 

@@ -25,7 +25,7 @@ security:
 paths:
 
   ## Service Info paths ##
-  
+
   /status:
     get:
       summary: Gets system status
@@ -50,7 +50,7 @@ paths:
 
 
   ## Conversion paths ##
-  
+
   /api/convert:
     post:
       summary: Converts Jupyter Notebook
@@ -88,7 +88,7 @@ paths:
               format: binary
               example: |
                 ---
-                title: "test-rmd"
+                title: "test_rmd"
                 output: html_document
                 ---
 
@@ -123,7 +123,7 @@ paths:
               schema:
                 type: string
                 format: binary
-                
+
 
 ##########################################################################################
 ## COMPONENTS
