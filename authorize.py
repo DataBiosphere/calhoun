@@ -14,7 +14,7 @@ def authorized(sam_root):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             # Check the Terra authorization service SAM for user auth status
-            user_is_authorized = __check_sam_authorization(sam_root)
+            user_is_authorized = _check_sam_authorization(sam_root)
             if user_is_authorized:
                 # run the handler method and return the response
                 response = f(*args, **kwargs)
@@ -26,7 +26,7 @@ def authorized(sam_root):
 
 
 # Query Terra's authorization service SAM to determine user authorization status. Return auth status boolean
-def __check_sam_authorization(sam_root):
+def _check_sam_authorization(sam_root):
     sam_url = sam_root + '/register/user/v2/self/info'
 
     # Well-formed requests must contain an authorization header
@@ -34,14 +34,14 @@ def __check_sam_authorization(sam_root):
         raise e.Unauthorized('Request requires authorization header supplying Oauth2 bearer token')
     try:
         sam_response = get(sam_url, headers={'authorization': request.headers['authorization']})
-        return __process_sam_response(sam_response)
+        return _process_sam_response(sam_response)
     except ConnectionError:
         raise e.ServiceUnavailable('Service Unavailable. Unable to contact authorization service')
 
 
 # Check the sam response and respond appropriately.
 # Return True if the user is authorized, otherwise raise a relevant exception with a helpful message
-def __process_sam_response(sam_response):
+def _process_sam_response(sam_response):
     # For an authorized user, we will receive a 200 status code with 'enabled: True' in the response body
     status = sam_response.status_code
     if status == 200:

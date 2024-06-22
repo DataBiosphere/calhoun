@@ -7,12 +7,12 @@ import json
 class TestConvert(unittest.TestCase):
 
     def test_convert(self):
-        with open('./notebooks/test1.ipynb') as f:
+        with open('./notebooks/test_ipynb.ipynb') as f:
             notebook_json = json.load(f)
         notebook_html = convert_ipynb.convert(notebook_json)
         self.assertIsNotNone(notebook_html)
-        self.assertIn("<div>", notebook_html)
-        self.assertIn("Check out this cool notebook site", notebook_html)
+        self.assertIn("<html>", notebook_html)
+        self.assertIn("check out this cool notebook site", notebook_html)
         self.assertIn("<img src=\"https://", notebook_html)
         self.assertIn("<img src=\"data:image/png", notebook_html)
         self.assertNotIn("onload=", notebook_html)

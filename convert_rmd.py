@@ -3,20 +3,37 @@ import os
 from sanitize_html import sanitize
 from tempfile import NamedTemporaryFile
 from rpy2.robjects.packages import importr
+from bs4 import BeautifulSoup
 
 
 def convert(stream):
     binary_data = stream.read()
     raw_rmd = binary_data.decode('ascii')
 
-    safe_rmd = __sanitize_rmd(raw_rmd)
-    raw_html = __to_html(safe_rmd)
-    safe_html = sanitize(raw_html)
+    safe_rmd = _sanitize_rmd(raw_rmd)
+    raw_html = _to_html(safe_rmd)
 
+    soup = BeautifulSoup(raw_html, 'html.parser')
+    body_tag = soup.body
+
+    # temporarily swap body tag for a safe tagname
+    body_tag.name = "div"
+
+    body_html = str(body_tag)
+    safe_body_html = sanitize(body_html)
+    safe_body_soup = BeautifulSoup(safe_body_html, "html.parser")
+
+    # swap tagname back
+    safe_body_soup.div.name = "body"
+
+    body_tag.replace_with(safe_body_soup.body)
+
+    safe_html = str(soup)
     return safe_html
 
 
-def __sanitize_rmd(data: str) -> bytes:
+
+def _sanitize_rmd(data: str) -> bytes:
     """
     Strip code blocks (ex ```{bash}) from the rmd before rendering it.
     When rendering, kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output) executes all code in these blocks.
@@ -36,7 +53,7 @@ def __sanitize_rmd(data: str) -> bytes:
     return file.encode('ascii')
 
 
-def __to_html(data: bytes):
+def _to_html(data: bytes):
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
     # The temp files are deleted as soon as the below with block ends.
