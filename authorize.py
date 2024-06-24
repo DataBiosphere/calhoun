@@ -2,12 +2,13 @@
 
 from flask import request
 from functools import wraps
-from requests import get
+from requests import get, Response
 from requests.exceptions import ConnectionError
+from typing import Callable
 import werkzeug.exceptions as e
 
 
-def authorized(sam_root):
+def authorized(sam_root: str): Callable[any, any]:
     """Authorization decorator.
 
     Decorated routes will precheck the request to see if the caller is authorized to perform the operation.
@@ -28,7 +29,7 @@ def authorized(sam_root):
     return decorator
 
 
-def _check_sam_authorization(sam_root):
+def _check_sam_authorization(sam_root: str) -> bool:
     """Query Terra's authorization service SAM to determine user authorization status. Return auth status boolean."""
     sam_url = sam_root + '/register/user/v2/self/info'
 
@@ -42,7 +43,7 @@ def _check_sam_authorization(sam_root):
         raise e.ServiceUnavailable('Service Unavailable. Unable to contact authorization service')
 
 
-def _process_sam_response(sam_response):
+def _process_sam_response(sam_response: Response) -> bool:
     """Check the sam response and respond appropriately.
 
     Return True if the user is authorized, otherwise raise a relevant exception with a helpful message.

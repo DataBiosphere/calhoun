@@ -7,7 +7,7 @@ from nbformat.v4 import to_notebook
 from sanitize_html import sanitize_body
 
 
-def to_safe_html(notebook_json):
+def to_safe_html(notebook_json: dict[str, any]) -> str:
     """Convert a JSON Jupyter notebook (.ipynb) to HTML with potentially dangerous code removed. Returns an HTML string."""
     # get a NotebookNode object that nbconvert can use
     notebook = to_notebook(notebook_json)

@@ -40,7 +40,7 @@ def sanitize_body(html: str) -> str:
     safe_html = str(soup)
 
 
-def sanitize(html: str):
+def sanitize(html: str) -> str:
     """Remove unsafe tags and attributes from raw HTML. Returns an HTML string."""
     if not html:
         return None
@@ -59,7 +59,7 @@ def sanitize(html: str):
     return safe_html
 
 
-def _get_safe_attributes():
+def _get_safe_attributes() -> dict[str, set]:
     """A dict of HTML tagnames to the valid attributes they support."""
     attributes = deepcopy(ALLOWED_ATTRIBUTES)
     for tag in safe_tags:

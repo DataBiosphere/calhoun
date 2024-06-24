@@ -8,7 +8,7 @@ import os
 from sanitize_html import sanitize_body
 
 
-def to_safe_html(stream):
+def to_safe_html(stream: bytes) -> str:
     """Convert an RMarkdown bytestream (.rmd) to HTML with potentially dangerous code removed. Returns an HTML string."""
     binary_data = stream.read()
     raw_rmd = binary_data.decode('ascii')
@@ -40,7 +40,7 @@ def _sanitize_rmd(data: str) -> bytes:
     return file.encode('ascii')
 
 
-def _to_html(data: bytes):
+def _to_html(data: bytes) -> str:
     """Convert a .rmd file to raw HTML using RMarkdown. Returns an HTML string."""
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
