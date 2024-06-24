@@ -1,3 +1,5 @@
+"""Unit tests for convert_ipynb_file and convert_rmd_file."""
+
 import json
 import unittest
 
@@ -6,8 +8,10 @@ import convert_rmd_file
 
 
 class TestConvert(unittest.TestCase):
+    """Test the code which converts input files to HTML."""
 
     def test_convert(self):
+        """Converting a .ipynb file to HTML strips injected code and leaves safe content in place."""
         with open('./notebooks/test_ipynb.ipynb') as f:
             notebook_json = json.load(f)
         notebook_html = convert_ipynb_file.to_safe_html(notebook_json)
@@ -21,15 +25,15 @@ class TestConvert(unittest.TestCase):
         self.assertNotIn("<script type=\"text/javascript\">", notebook_html)
         self.assertNotIn("<style scoped>", notebook_html)
 
-
     def test_convert_widgets(self):
+        """Converting a .ipynb file with widgets does not add code to the <head> block."""
         with open('./notebooks/test_widgets.ipynb') as f:
             notebook_json = json.load(f)
         notebook_html = convert_ipynb_file.to_safe_html(notebook_json)
         self.assertNotIn("function addWidgetsRenderer()", notebook_html)
 
-
     def test_rmd_convert(self):
+        """Converting a .rmd file strips injected code and leaves safe content in place."""
         with open('./notebooks/test_rmd.Rmd', 'rb') as f:
             rmd_html = convert_rmd_file.to_safe_html(f)
         self.assertIsNotNone(rmd_html)

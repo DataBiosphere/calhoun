@@ -1,3 +1,5 @@
+"""Authenticate the user with the Sam service."""
+
 from flask import request
 from functools import wraps
 from requests import get
@@ -5,11 +7,12 @@ from requests.exceptions import ConnectionError
 import werkzeug.exceptions as e
 
 
-# Authorization decorator
-# Decorated routes will first check the request to see if the caller is authorized to perform the operation
-# taken from example in Sanic documentation
-# https://sanic.readthedocs.io/en/latest/sanic/decorators.html
 def authorized(sam_root):
+    """Authorization decorator.
+
+    Decorated routes will precheck the request to see if the caller is authorized to perform the operation.
+    Taken from example in Sanic documentation: `https://sanic.readthedocs.io/en/latest/sanic/decorators.html`
+    """
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -25,8 +28,8 @@ def authorized(sam_root):
     return decorator
 
 
-# Query Terra's authorization service SAM to determine user authorization status. Return auth status boolean
 def _check_sam_authorization(sam_root):
+    """Query Terra's authorization service SAM to determine user authorization status. Return auth status boolean."""
     sam_url = sam_root + '/register/user/v2/self/info'
 
     # Well-formed requests must contain an authorization header
@@ -39,11 +42,14 @@ def _check_sam_authorization(sam_root):
         raise e.ServiceUnavailable('Service Unavailable. Unable to contact authorization service')
 
 
-# Check the sam response and respond appropriately.
-# Return True if the user is authorized, otherwise raise a relevant exception with a helpful message
 def _process_sam_response(sam_response):
-    # For an authorized user, we will receive a 200 status code with 'enabled: True' in the response body
+    """Check the sam response and respond appropriately.
+
+    Return True if the user is authorized, otherwise raise a relevant exception with a helpful message.
+    """
+
     status = sam_response.status_code
+    # For an authorized user, we will receive a 200 status code with 'enabled: True' in the response body
     if status == 200:
         if 'enabled' not in sam_response.json():
             raise e.InternalServerError('Internal Server Error. Unable to determine user authorization status')
