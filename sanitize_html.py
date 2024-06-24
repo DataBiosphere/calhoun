@@ -38,6 +38,7 @@ def sanitize_body(html: str) -> str:
     body_tag.replace_with(safe_body_soup.body)
 
     safe_html = str(soup)
+    return safe_html
 
 
 def sanitize(html: str) -> str:
