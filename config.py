@@ -1,3 +1,5 @@
+"""Global configurations for calhoun."""
+
 from os import environ
 
 

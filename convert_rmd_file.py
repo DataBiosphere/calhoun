@@ -45,13 +45,13 @@ def _to_html(data: bytes) -> str:
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
     # The temp files are deleted as soon as the below with block ends.
-    with NamedTemporaryFile(suffix=".Rmd") as in_file:
+    with NamedTemporaryFile(suffix='.Rmd') as in_file:
         in_file.write(data)
         in_file.seek(0)
 
         # Call R rmarkdown package from python.
         # See https://cran.r-project.org/web/packages/rmarkdown/index.html
-        rmd = importr("rmarkdown")
+        rmd = importr('rmarkdown')
         rendered_html = rmd.render(in_file.name)
         out_path = rendered_html[0]
 

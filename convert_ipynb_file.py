@@ -13,11 +13,11 @@ def to_safe_html(notebook_json: dict[str, any]) -> str:
     notebook = to_notebook(notebook_json)
 
     # strips notebook metadata to remove Jupyter widgets, which inject scripts into the html <head>
-    preprocessor = ClearMetadataPreprocessor(enabled = True, clear_cell_metadata = False)
+    preprocessor = ClearMetadataPreprocessor(enabled=True, clear_cell_metadata=False)
 
     # export notebook to HTML
     html_exporter = HTMLExporter()
-    html_exporter.register_preprocessor(ClearMetadataPreprocessor, enabled = True)
+    html_exporter.register_preprocessor(ClearMetadataPreprocessor, enabled=True)
     (notebook_html, _) = html_exporter.from_notebook_node(notebook)
 
     safe_html = sanitize_body(notebook_html)
