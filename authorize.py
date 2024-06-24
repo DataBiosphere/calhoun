@@ -8,7 +8,7 @@ from requests.exceptions import ConnectionError
 import werkzeug.exceptions as e
 
 
-def authorized(sam_root: str): Callable[..., any]:
+def authorized(sam_root: str) -> Callable[..., any]:
     """Authorization decorator.
 
     Decorated routes will precheck the request to see if the caller is authorized to perform the operation.
