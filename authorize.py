@@ -1,14 +1,14 @@
 """Authenticate the user with the Sam service."""
 
+from collections.abc import Callable
 from flask import request
 from functools import wraps
 from requests import get, Response
 from requests.exceptions import ConnectionError
-from typing import Callable
 import werkzeug.exceptions as e
 
 
-def authorized(sam_root: str): Callable[any, any]:
+def authorized(sam_root: str): Callable[..., any]:
     """Authorization decorator.
 
     Decorated routes will precheck the request to see if the caller is authorized to perform the operation.
