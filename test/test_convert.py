@@ -22,6 +22,13 @@ class TestConvert(unittest.TestCase):
         self.assertNotIn("<style scoped>", notebook_html)
 
 
+    def test_convert_widgets(self):
+        with open('./notebooks/test_widgets.ipynb') as f:
+            notebook_json = json.load(f)
+        notebook_html = convert_ipynb_file.to_safe_html(notebook_json)
+        self.assertNotIn("function addWidgetsRenderer()", notebook_html)
+
+
     def test_rmd_convert(self):
         with open('./notebooks/test_rmd.Rmd', 'rb') as f:
             rmd_html = convert_rmd_file.to_safe_html(f)
