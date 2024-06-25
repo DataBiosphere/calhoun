@@ -6,14 +6,19 @@ from test.test_convert import TestConvert
 from test.test_html_sanitize import TestHtmlSanitize
 
 
-def get_suite():
-    """Collect all unit tests to run together. Returns a unittest.TestSuite."""
-    # Add new test cases here to run automatically when `unit-test.sh` is run
-    test_cases = [
-        TestConvert,
-        TestHtmlSanitize
-    ]
+test_cases = [
+    TestConvert,
+    TestHtmlSanitize
+]
+"""Test cases to run with `unit-test.sh`."""
 
+
+def get_suite() -> unittest.TestSuite:
+    """Collect all unit tests to run together.
+
+    Returns:
+        TestSuite with all unit tests defined in `test_cases`.
+    """
     suites = []
     for test_case in test_cases:
         case_suite = unittest.defaultTestLoader.loadTestsFromTestCase(test_case)

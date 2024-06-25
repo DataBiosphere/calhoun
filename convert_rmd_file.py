@@ -9,7 +9,11 @@ from sanitize_html import sanitize_body
 
 
 def to_safe_html(stream: bytes) -> str:
-    """Convert an RMarkdown bytestream (.rmd) to HTML with potentially dangerous code removed. Returns an HTML string."""
+    """Convert an RMarkdown bytestream (.rmd) to HTML with potentially dangerous code removed.
+
+    Returns:
+        HTML string safe for browser display.
+    """
     binary_data = stream.read()
     raw_rmd = binary_data.decode('ascii')
 
@@ -21,17 +25,19 @@ def to_safe_html(stream: bytes) -> str:
 
     # Remove unsafe HTML
     safe_html = sanitize_body(raw_html)
-    
+
     return safe_html
 
 
 def _sanitize_rmd(data: str) -> bytes:
-    """
-    Strip code blocks (ex ```{bash}) from the rmd before rendering it.
+    """Strip code blocks (ex ```{bash}) from .rmd string.
 
     When rendering, kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output) executes all code in these blocks.
     Running arbitrary user code on the Calhoun server would leave us exposed to attack.
     For details, see https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem
+
+    Returns:
+        bytestring of .rmd without executable code blocks.
     """
     lines = data.split('\n')
     sanitized_file = []
@@ -47,7 +53,11 @@ def _sanitize_rmd(data: str) -> bytes:
 
 
 def _to_html(data: bytes) -> str:
-    """Convert a .rmd file to raw HTML using RMarkdown. Returns an HTML string."""
+    """Convert a .rmd file to raw HTML using RMarkdown.
+
+    Returns:
+        HTML string.
+    """
     # The rmarkdown converter unfortunately only works with files.
     # So we create temp files for the source markdown and destination html data.
     # The temp files are deleted as soon as the below with block ends.

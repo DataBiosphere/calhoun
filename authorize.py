@@ -13,6 +13,12 @@ def authorized(sam_root: str) -> Callable[..., any]:
 
     Decorated routes will precheck the request to see if the caller is authorized to perform the operation.
     Taken from example in Sanic documentation: `https://sanic.readthedocs.io/en/latest/sanic/decorators.html`
+
+    Returns:
+        Callable of the wrapped function.
+
+    Raises:
+        Forbidden: if not authorized
     """
     def decorator(f):
         @wraps(f)
@@ -30,7 +36,15 @@ def authorized(sam_root: str) -> Callable[..., any]:
 
 
 def _check_sam_authorization(sam_root: str) -> bool:
-    """Query Terra's authorization service SAM to determine user authorization status. Return auth status boolean."""
+    """Query Terra's authorization service SAM to determine user authorization status.
+
+    Returns:
+        True if Sam authorizes the user's access; false otherwise.
+
+    Raises:
+        ServiceUnavailable: if Sam request fails
+        Unauthorized: if no bearer token in request
+    """
     sam_url = sam_root + '/register/user/v2/self/info'
 
     # Well-formed requests must contain an authorization header
@@ -46,7 +60,14 @@ def _check_sam_authorization(sam_root: str) -> bool:
 def _process_sam_response(sam_response: Response) -> bool:
     """Check the sam response and respond appropriately.
 
-    Return True if the user is authorized, otherwise raise a relevant exception with a helpful message.
+    Returns:
+        True if the user is authorized, otherwise raise a relevant exception with a helpful message.
+
+    Raises:
+        Forbidden: if user not enabled in Sam or Sam responds with 403
+        Unauthorized: Sam responds with 401
+        ServiceUnavailable: Sam responds with 503
+        InternalServerError: if Sam response does not contain the expected JSON format or responds with 404 or another non-200 status
     """
 
     status = sam_response.status_code

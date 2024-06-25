@@ -19,7 +19,11 @@ unsafe_tags = set(['script', 'style'])
 
 
 def sanitize_body(html: str) -> str:
-    """Sanitize only the contents of the <body> tag. Returns an HTML string."""
+    """Sanitize only the contents of the <body> tag.
+
+    Returns:
+        HTML string with contents of <body> replaced with browser-safe HTML.
+    """
     # Get the body
     soup = BeautifulSoup(html, 'html.parser')
     body_tag = soup.body
@@ -42,7 +46,11 @@ def sanitize_body(html: str) -> str:
 
 
 def sanitize(html: str) -> str:
-    """Remove unsafe tags and attributes from raw HTML. Returns an HTML string."""
+    """Remove unsafe tags and attributes from raw HTML.
+
+    Returns:
+        HTML string safe for browser display.
+    """
     if not html:
         return None
 
@@ -61,7 +69,7 @@ def sanitize(html: str) -> str:
 
 
 def _get_safe_attributes() -> dict[str, set]:
-    """A dict of HTML tagnames to the valid attributes they support."""
+    """Dict of HTML tagnames to the valid attributes they support."""
     attributes = deepcopy(ALLOWED_ATTRIBUTES)
     for tag in safe_tags:
         if tag in attributes:
