@@ -6,4 +6,4 @@ docker kill t1 || true
 docker run --rm --name t1 \
   --entrypoint python \
   calhoun-test:0 \
-  test_convert.py
+  unit_test.py -v

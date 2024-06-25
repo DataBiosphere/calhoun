@@ -1,9 +1,12 @@
-from os import environ
 from flask import Flask, make_response, render_template, request
 from flask_cors import cross_origin
-from flask_talisman import Talisman
 from flask_swagger_ui import get_swaggerui_blueprint
-from utils import perform_notebook_conversion, perform_rmd_conversion, authorized
+from flask_talisman import Talisman
+from os import environ
+
+from authorize import authorized
+import convert_ipynb_file
+import convert_rmd_file
 
 
 # Webservice routing
@@ -16,16 +19,16 @@ SWAGGER_URL = '/swagger-ui'
 API_URL = '/static/api-docs.yaml'
 
 swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL, 
+    SWAGGER_URL,
     API_URL,
     config={
-        'app_name': "Calhoun"
+        'app_name': 'Calhoun'
     },
     oauth_config={
       'clientId': app.config['SWAGGER_CLIENT_ID'],
       'realm': app.config['SWAGGER_REALM'],
-      'appName': "Calhoun",
-      'scopeSeparator': " "
+      'appName': 'Calhoun',
+      'scopeSeparator': ' '
     }
 )
 
@@ -33,16 +36,17 @@ app.register_blueprint(swaggerui_blueprint)
 
 # Swagger CSP needs to have 'unsafe-inline' in the script-src and style-src fields
 SWAGGER_CSP = {
-    "script-src": ["'self'", "'unsafe-inline'"],
-    "style-src": ["'self'", "'unsafe-inline'"]
+    'script-src': ["'self'", "'unsafe-inline'"],
+    'style-src': ["'self'", "'unsafe-inline'"]
 }
-app.view_functions["swagger_ui.show"].talisman_view_options = {
-    "content_security_policy": SWAGGER_CSP
+app.view_functions['swagger_ui.show'].talisman_view_options = {
+    'content_security_policy': SWAGGER_CSP
 }
 
 
 @app.route('/_ah/warmup')
 def warmup():
+    # see https://cloud.google.com/appengine/docs/standard/configuring-warmup-requests?tab=python
     return '', 200, {}
 
 
@@ -52,13 +56,14 @@ def status():
     response.mimetype = 'text/plain'
     return response
 
+
 @app.route('/api/convert', methods={'POST'})
 @cross_origin()
 @authorized(app.config['SAM_ROOT'])
 def convert():
     json = request.get_json(force=True)
     try:
-      return perform_notebook_conversion(json)
+      return convert_ipynb_file.to_safe_html(json)
     except Exception as e:
       errMessage = f'{e.__class__.__name__} : {"".join(str(e).splitlines())} .'
       return render_template('jupyter-error.html', error=errMessage), f'400 {errMessage}'
@@ -70,10 +75,11 @@ def convert():
 def convert_rmd():
     stream = request.stream
     try:
-      return perform_rmd_conversion(stream)
+      return convert_rmd_file.to_safe_html(stream)
     except Exception as e:
       errMessage = f'{e.__class__.__name__} : {"".join(str(e).splitlines())} .'
       return render_template('rstudio-error.html', error=errMessage) , f'400 {errMessage}'
+
 
 if __name__ == '__main__':
     if(environ.get('DEVELOPMENT') == 'true'):
