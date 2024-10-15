@@ -42,8 +42,8 @@ def _sanitize_rmd(data: str) -> bytes:
     lines = data.split('\n')
     sanitized_file = []
     for line in lines:
-        if line.startswith('```'):
-            sanitized_line = '```'
+        if line.startswith('`'):
+            sanitized_line = '`'
         else:
             sanitized_line = line
         sanitized_file.append(sanitized_line)
