@@ -1,7 +1,6 @@
 """HTML converter for .rmd files."""
 
 from rpy2.robjects.packages import importr
-from pypandoc import convert_text
 from tempfile import NamedTemporaryFile
 import logging
 import os
