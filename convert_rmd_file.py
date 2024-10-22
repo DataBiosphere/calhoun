@@ -15,10 +15,9 @@ def to_safe_html(stream: bytes) -> str:
         HTML string safe for browser display.
     """
     binary_data = stream.read()
-    raw_rmd = binary_data.decode('ascii')
 
     # Convert to HTML
-    raw_html = _to_html(raw_rmd)
+    raw_html = _to_html(binary_data)
 
     # Remove unsafe HTML
     safe_html = sanitize_body(raw_html)
