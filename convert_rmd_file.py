@@ -4,6 +4,7 @@ from rpy2.robjects.packages import importr
 from tempfile import NamedTemporaryFile
 import logging
 import os
+import re
 
 from sanitize_html import sanitize_body
 
@@ -34,7 +35,6 @@ def _sanitize_rmd(data: str) -> bytes:
     """Strip code blocks (ex ```{bash} or `r) from .rmd string.
     When rendering, kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output) executes all code in these blocks.
     For details, see https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem
-    ! May result in some awkward formatting with options in {} brackets.
     Returns:
         bytestring of .rmd without executable code blocks.
     """
@@ -42,16 +42,19 @@ def _sanitize_rmd(data: str) -> bytes:
     # Remove executable in-line code
     semi_sanitized_data = data.replace('`r', '`')
 
-    lines = semi_sanitized_data.split('\n')
+    code_blocks = semi_sanitized_data.split('```')
     sanitized_file = []
-    for line in lines:
-        if line.find('```') > -1:
-            sanitized_line = '```'
+    for block in code_blocks:
+        block_no_space = "```" + block.replace(" ", "")
+        if block_no_space.find('```{') > -1:
+            sanitized_block = re.sub("(?s){.*?}", "", block)
+        elif block_no_space.find('```r') > -1:
+            r_idx = block.find('r')
+            sanitized_block = block[:r_idx] + block[r_idx + 1:]
         else:
-            sanitized_line = line
-        sanitized_file.append(sanitized_line)
-
-    file = '\n'.join(sanitized_file)
+            sanitized_block = block
+        sanitized_file.append(sanitized_block)
+    file = '```'.join(sanitized_file)
     return file.encode('ascii')
 
 
