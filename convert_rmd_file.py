@@ -34,16 +34,19 @@ def _sanitize_rmd(data: str) -> bytes:
     """Strip code blocks (ex ```{bash} or `r) from .rmd string.
     When rendering, kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output) executes all code in these blocks.
     For details, see https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem
+    ! May result in some awkward formatting with options in {} brackets.
     Returns:
         bytestring of .rmd without executable code blocks.
     """
-    lines = data.split('\n')
+
+    # Remove executable in-line code
+    semi_sanitized_data = data.replace('`r', '`')
+
+    lines = semi_sanitized_data.split('\n')
     sanitized_file = []
     for line in lines:
-        if line.find('```') > 0:
+        if line.find('```') > -1:
             sanitized_line = '```'
-        elif line.find('`r'):
-            sanitized_line = line.replace('`r', '`')
         else:
             sanitized_line = line
         sanitized_file.append(sanitized_line)
