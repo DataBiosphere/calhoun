@@ -67,10 +67,10 @@ jobs:
         docker push ${{ steps.construct-tags.outputs.sha-tag }}
         docker push ${{ steps.construct-tags.outputs.environment-tag }}
     - name: Dispatch to terra-helmfile
-      if: github.event_name == 'push'
+      if: github.event_name
       uses: broadinstitute/repository-dispatch@master
       with:
-        token: ${{ secrets.BROADBOT_TOKEN }}
+        token: ${{ secrets.GCR_PUBLISH_KEY_B64 }}
         repository: broadinstitute/terra-helmfile
         event-type: update-service
         client-payload: '{"service": "calhoun", "version": "${{ steps.short-sha.outputs.sha }}", "dev_only": false}'
