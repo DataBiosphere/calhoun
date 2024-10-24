@@ -39,19 +39,12 @@ def _sanitize_rmd(data: str) -> bytes:
         bytestring of .rmd without executable code blocks.
     """
 
-    # Remove executable in-line code
-    semi_sanitized_data = data.replace('`r', '` ')
+    # Remove options code blocks
+    semi_sanitized_data = re.sub("(?s){.*?}", "", data)
 
-    code_blocks = semi_sanitized_data.split('```')
-    sanitized_file = []
-    for block in code_blocks:
-        block_no_space = "```" + block.replace(" ", "")
-        if block_no_space.find('```{') > -1:
-            sanitized_block = re.sub("(?s){.*?}", "", block)
-        else:
-            sanitized_block = block
-        sanitized_file.append(sanitized_block)
-    file = '``` '.join(sanitized_file)
+    # Remove executable in-line code
+    file = semi_sanitized_data.replace('`r', '` ')
+
     return file.encode('ascii')
 
 
