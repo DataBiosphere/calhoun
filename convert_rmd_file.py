@@ -48,9 +48,6 @@ def _sanitize_rmd(data: str) -> bytes:
         block_no_space = "```" + block.replace(" ", "")
         if block_no_space.find('```{') > -1:
             sanitized_block = re.sub("(?s){.*?}", "", block)
-        elif block_no_space.find('```r') > -1:
-            r_idx = block.find('r')
-            sanitized_block = block[:r_idx] + block[r_idx + 1:]
         else:
             sanitized_block = block
         sanitized_file.append(sanitized_block)
