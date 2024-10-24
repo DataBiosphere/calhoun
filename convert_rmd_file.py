@@ -54,7 +54,7 @@ def _sanitize_rmd(data: str) -> bytes:
         else:
             sanitized_block = block
         sanitized_file.append(sanitized_block)
-    file = '```'.join(sanitized_file)
+    file = '``` '.join(sanitized_file)
     return file.encode('ascii')
 
 
