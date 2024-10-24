@@ -3,6 +3,7 @@
 from bs4 import BeautifulSoup
 from copy import deepcopy
 from nh3 import ALLOWED_TAGS, ALLOWED_ATTRIBUTES, clean
+import html5lib
 
 
 safe_attributes = set(['class'])
@@ -25,7 +26,7 @@ def sanitize_body(html: str) -> str:
         HTML string with contents of <body> replaced with browser-safe HTML.
     """
     # Get the body
-    soup = BeautifulSoup(html, 'html.parser')
+    soup = BeautifulSoup(html, 'html5lib')
     body_tag = soup.body
 
     # Swap body tag for a safe tagname. Sanitizer will strip <body> tags as unsafe, so we preserve the location of the outermost body tag, and its attributes.

@@ -7,3 +7,9 @@ docker run --rm --name t1 \
   --entrypoint python \
   calhoun-test:0 \
   unit_test.py -v
+
+# Capture the exit code of the docker run command
+exit_code=$?
+
+# Exit the script with the same exit code to trigger a failure in GH
+exit $exit_code

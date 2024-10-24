@@ -64,7 +64,9 @@ Run a local containerized server:
 ```sh
 docker image build . -t calhoun-test:0
 docker kill t1
-docker run -e FLASK_DEBUG=1 --rm -itd --name t1 -p 8080:8080 calhoun-test:0
+docker run \
+  -e SAM_ROOT=https://sam.dsde-dev.broadinstitute.org \
+  --rm -itd --name t1 -p 8080:8080 calhoun-test:0
 ```
 This will start a Calhoun server at localhost:8080.
 

@@ -4,6 +4,7 @@ from rpy2.robjects.packages import importr
 from tempfile import NamedTemporaryFile
 import logging
 import os
+import re
 
 from sanitize_html import sanitize_body
 
@@ -17,13 +18,34 @@ def to_safe_html(stream: bytes) -> str:
     binary_data = stream.read()
     raw_rmd = binary_data.decode('ascii')
 
+    # Remove executable code
+    safe_rmd = _sanitize_rmd(raw_rmd)
+
     # Convert to HTML
-    raw_html = _to_html(raw_rmd)
+    raw_html = _to_html(safe_rmd)
 
     # Remove unsafe HTML
     safe_html = sanitize_body(raw_html)
 
     return safe_html
+
+
+
+def _sanitize_rmd(data: str) -> bytes:
+    """Strip code blocks (ex ```{bash} or `r) from .rmd string.
+    When rendering, kitr (https://rmarkdown.rstudio.com/authoring_quick_tour.html#Rendering_Output) executes all code in these blocks.
+    For details, see https://docs.google.com/document/d/1aNCOKitTJH-GEkBSR4i-x91O0OQCZ8ZYa3feXtkja94/edit#heading=h.rvpr6zoz0jem
+    Returns:
+        bytestring of .rmd without executable code blocks.
+    """
+
+    # Remove options code blocks
+    semi_sanitized_data = re.sub("(?s){.*?}", "", data)
+
+    # Remove executable in-line code
+    file = semi_sanitized_data.replace('`r', '` ')
+
+    return file.encode('ascii')
 
 
 def _to_html(data: bytes) -> str:
@@ -42,11 +64,8 @@ def _to_html(data: bytes) -> str:
 
         # Call R rmarkdown package from python.
         # See https://cran.r-project.org/web/packages/rmarkdown/index.html
-        # Set eval = FALSE to prevent code execution.
         rmd = importr('rmarkdown')
-        output_format = rmd.output_format(knitr = rmd.knitr_options(opts_chunk = "set(eval = FALSE)"), 
-                                          pandoc = rmd.pandoc_options(to = "html"))
-        rendered_html = rmd.render(in_file.name, output_format = output_format)
+        rendered_html = rmd.render(in_file.name)
         out_path = rendered_html[0]
 
         try:
