@@ -40,7 +40,7 @@ def _sanitize_rmd(data: str) -> bytes:
     """
 
     # Remove executable in-line code
-    semi_sanitized_data = data.replace('`r', '`')
+    semi_sanitized_data = data.replace('`r', '` ')
 
     code_blocks = semi_sanitized_data.split('```')
     sanitized_file = []
