@@ -83,5 +83,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         status: ${{ job.status }}
-        channel: "#dsp-callisto"
+        channel: "#dsp-analysis-notifications"
         fields: repo,commit,author,action,eventName,ref,workflow,job,took
