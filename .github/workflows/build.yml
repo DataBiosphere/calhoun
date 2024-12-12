@@ -77,6 +77,8 @@ jobs:
 
   report-workflow:
     uses: broadinstitute/sherlock/.github/workflows/client-report-workflow.yaml@main
+    # only notify for develop branch build
+    if: github.event_name == 'push'
     with:
       notify-slack-channels-upon-workflow-completion: "#dsp-analysis-notifications"
       notify-slack-custom-icon: ":notebook:"
