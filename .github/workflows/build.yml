@@ -74,14 +74,11 @@ jobs:
         repository: broadinstitute/terra-helmfile
         event-type: update-service
         client-payload: '{"service": "calhoun", "version": "${{ steps.short-sha.outputs.sha }}", "dev_only": false}'
-    - name: Notify Slack
-      # only notify for develop branch build
-      if: github.event_name == 'push'
-      uses: broadinstitute/action-slack@v3.8.0
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        status: ${{ job.status }}
-        channel: "#dsp-analysis-notifications"
-        fields: repo,commit,author,action,eventName,ref,workflow,job,took
+
+  report-workflow:
+    uses: broadinstitute/sherlock/.github/workflows/client-report-workflow.yaml@main
+    with:
+      notify-slack-channels-upon-workflow-completion: "#dsp-analysis-notifications"
+      notify-slack-custom-icon: ":notebook:"
+    permissions:
+      id-token: write
