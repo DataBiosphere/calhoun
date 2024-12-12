@@ -148,6 +148,6 @@ If you add a new test case, make sure it is imported and added to `test_cases` i
 
 ## Deployment
 
-Upon merging a change to dev:
-- The build github workflow builds the new image
-- Then it automatically updates the calhoun version in terra-helmfile
+Upon merging a change to dev, the build github workflow will:
+- Build the new image
+- Automatically update the calhoun version in terra-helmfile
