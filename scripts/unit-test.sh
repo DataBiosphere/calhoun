@@ -12,5 +12,5 @@ docker run --rm --name t1 \
 exit_code=$?
 
 # Exit the script with the same exit code to trigger a failure in GH
-# if there is one in the script
+# if there is one in the script 
 exit $exit_code
