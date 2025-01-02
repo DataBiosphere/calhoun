@@ -18,8 +18,6 @@ This project is essentially nbconvert and rmarkdown as a REST service. It takes 
 A swagger-ui page is available at /swagger-ui/ on any running instance. For existing instances, those are:
 
 * dev: https://calhoun.dsde-dev.broadinstitute.org/swagger-ui/
-* alpha: https://calhoun.dsde-alpha.broadinstitute.org/swagger-ui/
-* perf: https://calhoun.dsde-perf.broadinstitute.org/swagger-ui/
 * staging: https://calhoun.dsde-staging.broadinstitute.org/swagger-ui/
 * prod: https://calhoun.dsde-prod.broadinstitute.org/swagger-ui/
 
@@ -148,6 +146,6 @@ If you add a new test case, make sure it is imported and added to `test_cases` i
 
 ## Deployment
 
-Upon merging a change to dev:
-- The build github workflow builds the new image
-- Then it automatically updates the calhoun version in terra-helmfile
+Upon merging a change to dev, the build github workflow will:
+- Build the new image
+- Automatically update the calhoun version in terra-helmfile
