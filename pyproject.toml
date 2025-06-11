@@ -9,7 +9,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
 flask = "3.0.3"
-flask-cors = "3.0.10"
+flask-cors = "6.0.0"
 flask-talisman = "0.7.0"
 flask-swagger-ui = "3.36.0"
 nbconvert = ">=6.0.7"
