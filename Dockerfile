@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && apt update && apt install -yq --no-install-recommends \
   libcurl4-openssl-dev \
   libssl-dev \
+  libffi-dev \
   libgeos-dev \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
@@ -19,7 +20,8 @@ RUN echo "deb http://http.debian.net/debian testing main" > /etc/apt/sources.lis
 # Install R
 RUN apt-get update && apt-get install -y -t testing --no-install-recommends \
   r-base \
-  r-base-dev
+  r-base-dev \
+  libffi-dev
 
 RUN R -e 'install.packages(c("rmarkdown", "stringi", "tidyverse", "Seurat", "ggforce"))'
 
