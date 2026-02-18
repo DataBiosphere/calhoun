@@ -32,7 +32,7 @@ ENV POETRY_HOME="/opt/poetry" \
 
 ENV PATH="$PATH:$POETRY_HOME/bin"
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | python3 - --version 2.3.2
 
 COPY poetry.lock .
 COPY pyproject.toml .
